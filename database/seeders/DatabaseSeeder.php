@@ -2,22 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Carrier;
+use App\Models\Vehicle;
+use App\Models\Shipment;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $carrier = Carrier::factory()->create([
+            'name' => 'carrier',
+            'email' => 'carrier@carrier.com',
+            "is_admin" => false
         ]);
+        $admin = Carrier::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            "is_admin" => true
+        ]);
+        Vehicle::factory(1)->withCarrier($carrier)->create();
+        Shipment::factory(5)->withCarrier($carrier)->create();
     }
 }
