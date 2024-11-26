@@ -16,7 +16,9 @@ class CarrierResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "name" => $this->name,
+            "id" => $this->id,
+            "first_name" => $this->first_name,
+            "last_name" => $this->last_name,
         ];
     }
 }

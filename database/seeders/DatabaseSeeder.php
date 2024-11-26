@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\Carrier;
 use App\Models\Vehicle;
 use App\Models\Shipment;
@@ -12,15 +13,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $carrier = Carrier::factory()->create([
-            'name' => 'carrier',
-            'email' => 'carrier@carrier.com',
-            "is_admin" => false
+            'first_name' => "Ádám",
+            'last_name' => "Fuvar",
+            'email' => 'fuvar@adam.com',
         ]);
         $admin = Carrier::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            "is_admin" => true
+            'first_name' => "József",
+            'last_name' => "Admin",
+            'email' => 'admin@jozsi.com',
         ]);
+        Admin::factory(1)->withCarrier($admin)->create();
         Vehicle::factory(1)->withCarrier($carrier)->create();
         Shipment::factory(5)->withCarrier($carrier)->create();
     }

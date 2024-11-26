@@ -2,14 +2,25 @@ export const LINKS = [
     {
         name: "dashboard",
         text: "Főoldal",
+        protected: false,
     },
     {
-        name: "shipment.index",
+        name: "shipments.index",
         text: "Munkák",
+        protected: false,
     },
+    // {
+    //     name: "dashboard",
+    //     text: "Járművek",
+    //     protected: true,
+    // },
 ];
 
 export const SHIPMENT_TABLE_COLUMNS = [
+    {
+        name: "id",
+        text: "#",
+    },
     {
         name: "departure_address",
         text: "Indulási cím",
@@ -27,7 +38,7 @@ export const SHIPMENT_TABLE_COLUMNS = [
         text: "Címzett",
     },
     {
-        name: "carrier_name",
+        name: "carrier",
         text: "Fuvarozó",
     },
 ];
@@ -37,4 +48,8 @@ export const SHIPMENT_STATUS = {
     progress: "Folyamatban",
     finished: "Elvégezve",
     failed: "Sikertelen",
+};
+
+export const getRoleName = (admin) => {
+    return admin == 1 ? "Adminisztrátor" : "Fuvarozó";
 };

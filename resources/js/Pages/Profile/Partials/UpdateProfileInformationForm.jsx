@@ -2,6 +2,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import { getRoleName } from "@/consts";
 import { Transition } from "@headlessui/react";
 import { Link, useForm, usePage } from "@inertiajs/react";
 
@@ -10,11 +11,13 @@ export default function UpdateProfileInformation({
     status,
     className = "",
 }) {
-    const user = usePage().props.auth.user;
+    const { user } = usePage().props.auth;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
+            nickname: user.nickname,
+            first_name: user.first_name,
+            last_name: user.last_name,
             email: user.email,
         });
 
@@ -28,29 +31,80 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Információ
-                </h2>
-
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Adatok módosítása
-                </p>
+                </h2>
+                <span className="text-gray-700 dark:text-gray-400">
+                    Szerepkör:{" "}
+                    <span className="font-bold">
+                        {getRoleName(user.is_admin)}
+                    </span>
+                </span>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="name" value="Név" />
+                {user.is_admin && (
+                    <div>
+                        <InputLabel htmlFor="nickname" value="Becenév" />
 
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData("name", e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
+                        <TextInput
+                            id="nickname"
+                            type="text"
+                            className="mt-1 block w-full"
+                            value={data.nickname}
+                            onChange={(e) =>
+                                setData("nickname", e.target.value)
+                            }
+                            required
+                        />
 
-                    <InputError className="mt-2" message={errors.name} />
+                        <InputError
+                            className="mt-2"
+                            message={errors.nickname}
+                        />
+                    </div>
+                )}
+
+                <div className="flex gap-2">
+                    <div className="w-full">
+                        <InputLabel htmlFor="last_name" value="Vezetéknév" />
+
+                        <TextInput
+                            id="last_name"
+                            className="mt-1 block w-full"
+                            value={data.last_name}
+                            onChange={(e) =>
+                                setData("last_name", e.target.value)
+                            }
+                            required
+                            isFocused
+                            autoComplete="last_name"
+                        />
+
+                        <InputError
+                            className="mt-2"
+                            message={errors.last_name}
+                        />
+                    </div>
+                    <div className="w-full">
+                        <InputLabel htmlFor="first_name" value="Keresztnév" />
+
+                        <TextInput
+                            id="first_name"
+                            className="mt-1 block w-full"
+                            value={data.first_name}
+                            onChange={(e) =>
+                                setData("first_name", e.target.value)
+                            }
+                            required
+                            isFocused
+                            autoComplete="first_name"
+                        />
+
+                        <InputError
+                            className="mt-2"
+                            message={errors.first_name}
+                        />
+                    </div>
                 </div>
 
                 <div>

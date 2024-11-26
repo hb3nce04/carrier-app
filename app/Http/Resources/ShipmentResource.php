@@ -21,7 +21,7 @@ class ShipmentResource extends JsonResource
             "departure_address" => $this->departure_address,
             "arrival_address" => $this->arrival_address,
             "consignee" => new ConsigneeResource($this->consignee),
-            "carrier_name" => (new CarrierResource($this->carrier))->name,
+            "carrier" => new CarrierResource($this->carrier),
             "status" => $this->status,
         ];
     }

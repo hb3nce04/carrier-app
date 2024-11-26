@@ -11,7 +11,7 @@ class ShipmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->is_admin;
     }
 
     /**
@@ -24,9 +24,11 @@ class ShipmentRequest extends FormRequest
         return [
             "departure_address" => "required|string|min:3|max:255",
             "arrival_address" => "required|string|min:3|max:255",
-            "consignee_id" => "required|numeric",
-            "carrier_id" => "required|numeric",
-            "status" => "required|string|in:pending,progress,failed,completed",
+            "consignee_first_name" => "required|string",
+            "consignee_last_name" => "required|string",
+            "consignee_phone_number" => "required|string",
+            "carrier_id" => "numeric",
+            "status" => "required|string|in:issued,progress,finished,failed",
         ];
     }
 }

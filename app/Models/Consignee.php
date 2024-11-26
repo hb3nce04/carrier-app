@@ -12,6 +12,10 @@ class Consignee extends Model
         "phone_number"
     ];
 
+    /**
+     * Summary of shipment
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function shipment()
     {
         return $this->hasMany(Shipment::class);

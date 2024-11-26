@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class Carrier extends Authenticatable
 {
@@ -18,7 +21,8 @@ class Carrier extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -46,8 +50,44 @@ class Carrier extends Authenticatable
         ];
     }
 
-    public function shipments()
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_admin', "nickname"];
+
+    /**
+     * Get the shipments for the carrier.
+     */
+    public function shipments(): HasMany
     {
         return $this->hasMany(Shipment::class);
+    }
+
+    /**
+     * Get the admin record associated with the carrier.
+     */
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class);
+    }
+
+    /**
+     * Determine if the carrier is an administrator or not.
+     */
+    protected function isAdmin(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->admin()->exists(),
+        );
+    }
+
+    /**
+     * If the carrier is admin, get the nickname
+     */
+    public function getNicknameAttribute(): string|null
+    {
+        return $this->isAdmin ? $this->admin->nickname : null;
     }
 }

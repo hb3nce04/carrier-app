@@ -2,12 +2,24 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { LINKS } from "@/consts";
+import { getRoleName, LINKS } from "@/consts";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { user } = usePage().props.auth;
+
+    const getDisplayedName = () => {
+        if (user.is_admin) {
+            if (user.nickname) {
+                return user.nickname;
+            } else {
+                `${user.last_name} ${user.first_name}`;
+            }
+        } else {
+            return `${user.last_name} ${user.first_name}`;
+        }
+    };
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -26,14 +38,16 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 {LINKS.map((link) => {
-                                    return (
+                                    return (user.is_admin && link.protected) ||
+                                        !link.protected ? (
                                         <NavLink
+                                            key={link.name}
                                             href={route(link.name)}
                                             active={route().current(link.name)}
                                         >
                                             {link.text}
                                         </NavLink>
-                                    );
+                                    ) : null;
                                 })}
                             </div>
                         </div>
@@ -45,10 +59,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                                className="gap-1 inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
-                                                {user.name}
-
+                                                <span>
+                                                    {getDisplayedName()}
+                                                </span>
+                                                <span>
+                                                    (
+                                                    {getRoleName(user.is_admin)}
+                                                    )
+                                                </span>
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -136,8 +156,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         {LINKS.map((link) => {
                             return (
                                 <ResponsiveNavLink
+                                    key={link.name}
                                     href={route(link.name)}
-                                    active={route().current(link.name)}
+                                    active={route().current(link.user)}
                                 >
                                     {link.text}
                                 </ResponsiveNavLink>
@@ -147,8 +168,9 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
-                            <div className="text-base font-medium text-gray-800 dark:text-gray-200">
-                                {user.name}
+                            <div className="flex gap-1 text-base font-medium text-gray-800 dark:text-gray-200">
+                                <span>{getDisplayedName()}</span>
+                                <span>({getRoleName(user.is_admin)})</span>
                             </div>
                             <div className="text-sm font-medium text-gray-500">
                                 {user.email}
