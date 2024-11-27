@@ -1,13 +1,15 @@
 import { Link, useForm } from "@inertiajs/react";
 
 import { MdEdit, MdDelete } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 import DangerButton from "../DangerButton";
 
 import Modal from "../Modal";
 import SecondaryButton from "../SecondaryButton";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-export function Table({ rows, columns, routeName }) {
+export function Table({ rows, columns, routeName, canDelete = true }) {
     const [confirmingDeleteRow, setConfirmingDeleteRow] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
@@ -23,8 +25,13 @@ export function Table({ rows, columns, routeName }) {
 
         destroy(route(`${routeName}.destroy`, selectedRow), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
-            // onFinish: () => reset(),
+            onSuccess: () => {
+                closeModal();
+                toast.success("Sor sikeresen törölve!");
+            },
+            onError: () => {
+                toast.error("Hiba történt a sor törlése során!");
+            },
         });
     };
 
@@ -83,28 +90,40 @@ export function Table({ rows, columns, routeName }) {
                                     <div className="p-2 text-2xl flex gap-2">
                                         <Link
                                             href={route(
+                                                `${routeName}.show`,
+                                                row
+                                            )}
+                                        >
+                                            <FaEye className="hover:text-sky-700 transition" />
+                                        </Link>
+                                        <Link
+                                            href={route(
                                                 `${routeName}.edit`,
                                                 row
                                             )}
                                         >
-                                            <MdEdit className="hover:text-sky-700 transition" />
+                                            <MdEdit className="hover:text-green-700 transition" />
                                         </Link>
 
-                                        <MdDelete
-                                            onClick={() => confirmDelete(row)}
-                                            className="hover:text-red-700 transition cursor-pointer"
-                                        />
+                                        {canDelete && (
+                                            <MdDelete
+                                                onClick={() =>
+                                                    confirmDelete(row)
+                                                }
+                                                className="hover:text-red-700 transition cursor-pointer"
+                                            />
+                                        )}
                                     </div>
                                 </td>
                             </tr>
                         ))}
                 </tbody>
             </table>
-            {rows.length === 0 && (
+            {rows.length === 0 ? (
                 <div className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 w-full text-center p-2">
                     Nincs megjeleníthető adat.
                 </div>
-            )}
+            ) : null}
         </>
     );
 }

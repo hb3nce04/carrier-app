@@ -35,7 +35,7 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
-        if ($request->user()->isAdmin) { // $request->user()->isDirty('nickname')
+        if ($request->user()->isAdmin) {
             $request->user()->admin()->update(['nickname' => $request->nickname]);
         }
 

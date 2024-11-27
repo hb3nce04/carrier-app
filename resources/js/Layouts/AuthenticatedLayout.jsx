@@ -154,15 +154,16 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         {LINKS.map((link) => {
-                            return (
+                            return (user.is_admin && link.protected) ||
+                                !link.protected ? (
                                 <ResponsiveNavLink
                                     key={link.name}
                                     href={route(link.name)}
-                                    active={route().current(link.user)}
+                                    active={route().current(link.name)}
                                 >
                                     {link.text}
                                 </ResponsiveNavLink>
-                            );
+                            ) : null;
                         })}
                     </div>
 

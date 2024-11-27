@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/custom/SelectInput";
 import { SHIPMENT_STATUS } from "@/consts";
+import toast from "react-hot-toast";
 
 export default function Create({ carriers }) {
     const { data, setData, post, errors } = useForm({
@@ -22,8 +23,16 @@ export default function Create({ carriers }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
-        post(route("shipments.store"));
+        post(route("shipments.store"), {
+            onSuccess: () => {
+                toast.success("Munka sikeresen létrehozva!");
+            },
+            onError: () => {
+                if (!errors) {
+                    toast.error("Hiba történt a munka létrehozása során!");
+                }
+            },
+        });
     };
 
     return (
@@ -192,9 +201,13 @@ export default function Create({ carriers }) {
                     </div>
 
                     <div className="mt-6 flex gap-2 justify-end">
-                        <SecondaryButton>
-                            <Link href={route("shipments.index")}>Vissza</Link>
-                        </SecondaryButton>
+                        <Link
+                            href={route("shipments.index")}
+                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-800"
+                        >
+                            Vissza
+                        </Link>
+
                         <PrimaryButton>Létrehozás</PrimaryButton>
                     </div>
                 </form>

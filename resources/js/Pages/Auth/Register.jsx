@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -19,6 +20,14 @@ export default function Register() {
 
         post(route("register"), {
             onFinish: () => reset("password", "password_confirmation"),
+            onSuccess: () => {
+                toast.success("Sikeres regisztráció!");
+            },
+            onError: () => {
+                if (!errors) {
+                    toast.error("Hiba történt a regisztráció során!");
+                }
+            },
         });
     };
 

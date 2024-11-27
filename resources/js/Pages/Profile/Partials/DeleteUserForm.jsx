@@ -6,6 +6,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function DeleteUserForm({ className = "" }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -32,8 +33,16 @@ export default function DeleteUserForm({ className = "" }) {
 
         destroy(route("profile.destroy"), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
+            onSuccess: () => {
+                toast.success("Fiók sikeresen törölve!");
+                closeModal();
+            },
+            onError: () => {
+                passwordInput.current.focus();
+                if (!errors) {
+                    toast.error("Hiba történt a fiók törlése során!");
+                }
+            },
             onFinish: () => reset(),
         });
     };

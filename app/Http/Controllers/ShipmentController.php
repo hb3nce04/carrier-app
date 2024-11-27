@@ -7,6 +7,8 @@ use App\Http\Resources\CarrierResource;
 use App\Http\Resources\ShipmentResource;
 use App\Models\Carrier;
 use App\Models\Consignee;
+use App\Notifications\ShipmentFailedNotification;
+use App\Notifications\ShipmentNotification;
 use Inertia\Inertia;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
@@ -21,9 +23,13 @@ class ShipmentController extends Controller
         } else {
             $query = Shipment::query()->where("carrier_id", $request->user()->id);
         }
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
         $shipments = $query->paginate(30);
         return Inertia::render('Shipment/Index', [
             "shipments" => ShipmentResource::collection($shipments),
+            "queryParams" => request()->query() ?: null,
         ]);
     }
 
@@ -40,27 +46,27 @@ class ShipmentController extends Controller
     // TODO doesn't work
     public function store(ShipmentRequest $request)
     {
-        dd($request);
-
-        $request->validated();
+        $validated = $request->validated();
         $consignee = Consignee::create([
-            "first_name" => $request->consignee_first_name,
-            "last_name" => $request->consignee_last_name,
-            "phone_number" => $request->consignee_phone_number,
+            "first_name" => $validated["consignee_first_name"],
+            "last_name" => $validated["consignee_last_name"],
+            "phone_number" => $validated["consignee_phone_number"],
         ]);
         Shipment::create([
-            "departure_address" => $request->departure_address,
-            "arrival_address" => $request->arrival_address,
-            "carrier_id" => $request->carrier_id,
-            "status" => $request->status,
+            "departure_address" => $validated["departure_address"],
+            "arrival_address" => $validated["arrival_address"],
+            "carrier_id" => $validated["carrier_id"],
+            "status" => $validated["status"],
             "consignee_id" => $consignee->id,
         ]);
         return redirect()->route('shipments.index');
     }
 
-    public function show(Request $request)
+    public function show(Request $request, Shipment $shipment)
     {
-
+        return Inertia::render('Shipment/Show', [
+            "shipment" => new ShipmentResource($shipment),
+        ]);
     }
 
     public function edit(Request $request, Shipment $shipment)
@@ -87,6 +93,11 @@ class ShipmentController extends Controller
             "carrier_id" => $request->carrier_id,
             "status" => $request->status,
         ]);
+        // Ha a munka sikertelen, értesítjük az adminisztrátort!
+        if ($shipment->status === "failed") {
+            $shipment->carrier->notify(new ShipmentFailedNotification($shipment, $request->user()->last_name . " " . $request->user()->first_name));
+        }
+
         return redirect()->route('shipments.index');
 
     }

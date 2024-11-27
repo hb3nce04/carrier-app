@@ -9,11 +9,11 @@ export const LINKS = [
         text: "Munkák",
         protected: false,
     },
-    // {
-    //     name: "dashboard",
-    //     text: "Járművek",
-    //     protected: true,
-    // },
+    {
+        name: "vehicles.index",
+        text: "Járművek",
+        protected: true,
+    },
 ];
 
 export const SHIPMENT_TABLE_COLUMNS = [
@@ -40,6 +40,25 @@ export const SHIPMENT_TABLE_COLUMNS = [
     {
         name: "carrier",
         text: "Fuvarozó",
+    },
+];
+
+export const VEHICLE_TABLE_COLUMNS = [
+    {
+        name: "id",
+        text: "#",
+    },
+    {
+        name: "brand",
+        text: "Márka",
+    },
+    {
+        name: "model",
+        text: "Model",
+    },
+    {
+        name: "carrier",
+        text: "Tulajdonos",
     },
 ];
 

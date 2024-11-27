@@ -15,4 +15,9 @@ class Vehicle extends Model
         "plate_number",
         "carrier_id"
     ];
+
+    public function carrier()
+    {
+        return $this->belongsTo(Carrier::class);
+    }
 }

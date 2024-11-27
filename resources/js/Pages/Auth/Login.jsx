@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -18,6 +19,14 @@ export default function Login({ status, canResetPassword }) {
 
         post(route("login"), {
             onFinish: () => reset("password"),
+            onSuccess: () => {
+                toast.success("Sikeresen bejelentkeztél!");
+            },
+            onError: () => {
+                if (!errors) {
+                    toast.error("Hiba történt a bejelentkezés során!");
+                }
+            },
         });
     };
 

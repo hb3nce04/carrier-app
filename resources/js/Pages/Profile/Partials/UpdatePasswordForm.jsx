@@ -2,23 +2,15 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { useRef } from "react";
+import toast from "react-hot-toast";
 
 export default function UpdatePasswordForm({ className = "" }) {
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
-    const {
-        data,
-        setData,
-        errors,
-        put,
-        reset,
-        processing,
-        recentlySuccessful,
-    } = useForm({
+    const { data, setData, errors, put, reset, processing } = useForm({
         current_password: "",
         password: "",
         password_confirmation: "",
@@ -29,7 +21,10 @@ export default function UpdatePasswordForm({ className = "" }) {
 
         put(route("password.update"), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+                toast.success("Jelszó módosítva!");
+            },
             onError: (errors) => {
                 if (errors.password) {
                     reset("password", "password_confirmation");
@@ -39,6 +34,10 @@ export default function UpdatePasswordForm({ className = "" }) {
                 if (errors.current_password) {
                     reset("current_password");
                     currentPasswordInput.current.focus();
+                }
+
+                if (!errors) {
+                    toast.error("Hiba történt a jelszó módosítása során!");
                 }
             },
         });
@@ -118,18 +117,6 @@ export default function UpdatePasswordForm({ className = "" }) {
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Mentés</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Mentve.
-                        </p>
-                    </Transition>
                 </div>
             </form>
         </section>

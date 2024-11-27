@@ -3,8 +3,8 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { getRoleName } from "@/consts";
-import { Transition } from "@headlessui/react";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -13,18 +13,26 @@ export default function UpdateProfileInformation({
 }) {
     const { user } = usePage().props.auth;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            nickname: user.nickname,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-        });
+    const { data, setData, patch, errors, processing } = useForm({
+        nickname: user.nickname,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+    });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        patch(route("profile.update"), {
+            onSuccess: () => {
+                toast.success("Adatok módosítva!");
+            },
+            onError: () => {
+                if (!errors) {
+                    toast.error("Hiba történt az adatok módosítása során!");
+                }
+            },
+        });
     };
 
     return (
@@ -147,18 +155,6 @@ export default function UpdateProfileInformation({
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Mentés</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Mentve.
-                        </p>
-                    </Transition>
                 </div>
             </form>
         </section>
