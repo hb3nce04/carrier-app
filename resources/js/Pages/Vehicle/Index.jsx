@@ -30,7 +30,7 @@ export default function Index({ vehicles }) {
                     rows={rows}
                     columns={VEHICLE_TABLE_COLUMNS}
                     routeName={"vehicles"}
-                    canDelete={true}
+                    canDelete={false}
                 />
             </div>
         </AuthenticatedLayout>

@@ -14,6 +14,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
 
     Route::resource('shipments', ShipmentController::class);
+    Route::patch('/shipments/{shipment}/status', [ShipmentController::class, 'changeStatus'])->name('shipments.changeStatus');
+
     Route::resource('vehicles', VehicleController::class);
 });
 

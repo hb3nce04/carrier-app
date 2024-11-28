@@ -4,7 +4,12 @@ import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 
-export default function Index({ shipments, queryParams = null }) {
+export default function Index({
+    shipments,
+    filter = false,
+    can = { create: false, update: false, delete: false },
+    queryParams = null,
+}) {
     const { user } = usePage().props.auth;
     queryParams = queryParams || {};
     const rows = shipments.data.map((shipment) => {
@@ -36,24 +41,24 @@ export default function Index({ shipments, queryParams = null }) {
 
             <div className="relative overflow-x-auto text-gray-500 dark:text-gray-400">
                 <div className="flex justify-end my-4 gap-4 items-center">
-                    {user.is_admin && (
-                        <>
-                            <SelectInput
-                                value={queryParams.status}
-                                onChange={(e) => changeStatus(e.target.value)}
-                                className="align-self-start"
-                            >
-                                <option key={1} value={undefined}>
-                                    Válassz státuszt!
+                    {filter && (
+                        <SelectInput
+                            value={queryParams.status}
+                            onChange={(e) => changeStatus(e.target.value)}
+                            className="align-self-start"
+                        >
+                            <option key={1} value={""}>
+                                Válassz státuszt!
+                            </option>
+                            {Object.keys(SHIPMENT_STATUS).map((status, i) => (
+                                <option key={i + 1} value={status}>
+                                    {SHIPMENT_STATUS[status]}
                                 </option>
-                                {Object.keys(SHIPMENT_STATUS).map(
-                                    (status, i) => (
-                                        <option key={i + 1} value={status}>
-                                            {SHIPMENT_STATUS[status]}
-                                        </option>
-                                    )
-                                )}
-                            </SelectInput>
+                            ))}
+                        </SelectInput>
+                    )}
+                    {can.create && (
+                        <>
                             <Link
                                 href={route("shipments.create")}
                                 className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
@@ -67,7 +72,8 @@ export default function Index({ shipments, queryParams = null }) {
                     rows={rows}
                     columns={SHIPMENT_TABLE_COLUMNS}
                     routeName={"shipments"}
-                    canDelete={user.is_admin}
+                    canUpdate={can.update}
+                    canDelete={can.delete}
                 />
             </div>
         </AuthenticatedLayout>

@@ -5,7 +5,6 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/custom/SelectInput";
 import { SHIPMENT_STATUS } from "@/consts";
 import toast from "react-hot-toast";
@@ -46,10 +45,7 @@ export default function Edit({ shipment, carriers }) {
                 <h1 className="text-lg font-bold text-slate-300">
                     Munka: #{shipment.id}
                 </h1>
-                <form
-                    onSubmit={onSubmit}
-                    className=" mt-5 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
-                >
+                <form onSubmit={onSubmit} className="mt-5">
                     {user.is_admin && (
                         <>
                             <div>
@@ -216,6 +212,20 @@ export default function Edit({ shipment, carriers }) {
                             ))}
                         </SelectInput>
                         <InputError message={errors.status} className="mt-2" />
+                    </div>
+                    <div className="mt-2">
+                        <div>
+                            Rögzítés dátuma:{" "}
+                            <span className="text-indigo-400 font-bold">
+                                {shipment.created_at}
+                            </span>
+                        </div>
+                        <div>
+                            Utolsó módosítás dátuma:{" "}
+                            <span className="text-indigo-400 font-bold">
+                                {shipment.updated_at}
+                            </span>
+                        </div>
                     </div>
 
                     <div className="mt-6 flex gap-2 justify-end">

@@ -9,7 +9,13 @@ import SecondaryButton from "../SecondaryButton";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export function Table({ rows, columns, routeName, canDelete = true }) {
+export function Table({
+    rows,
+    columns,
+    routeName,
+    canUpdate = false,
+    canDelete = false,
+}) {
     const [confirmingDeleteRow, setConfirmingDeleteRow] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
@@ -59,7 +65,7 @@ export function Table({ rows, columns, routeName, canDelete = true }) {
                     </div>
                 </form>
             </Modal>
-            <table className="w-full text-sm text-left rtl:text-right ">
+            <table className="w-full text-sm text-left rtl:text-right">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {columns.map((column, i) => (
@@ -94,16 +100,24 @@ export function Table({ rows, columns, routeName, canDelete = true }) {
                                                 row
                                             )}
                                         >
-                                            <FaEye className="hover:text-sky-700 transition" />
+                                            <FaEye
+                                                className="hover:text-sky-700 transition"
+                                                title="Megtekintés"
+                                            />
                                         </Link>
-                                        <Link
-                                            href={route(
-                                                `${routeName}.edit`,
-                                                row
-                                            )}
-                                        >
-                                            <MdEdit className="hover:text-green-700 transition" />
-                                        </Link>
+                                        {canUpdate && (
+                                            <Link
+                                                href={route(
+                                                    `${routeName}.edit`,
+                                                    row
+                                                )}
+                                            >
+                                                <MdEdit
+                                                    className="hover:text-green-700 transition"
+                                                    title="Módosítás"
+                                                />
+                                            </Link>
+                                        )}
 
                                         {canDelete && (
                                             <MdDelete
@@ -111,6 +125,7 @@ export function Table({ rows, columns, routeName, canDelete = true }) {
                                                     confirmDelete(row)
                                                 }
                                                 className="hover:text-red-700 transition cursor-pointer"
+                                                title="Törlés"
                                             />
                                         )}
                                     </div>

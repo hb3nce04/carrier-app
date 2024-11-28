@@ -1,14 +1,29 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-
-import SecondaryButton from "@/Components/SecondaryButton";
 import { SHIPMENT_STATUS } from "@/consts";
-import PrimaryButton from "@/Components/PrimaryButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/custom/SelectInput";
+import toast from "react-hot-toast";
 
-export default function Edit({ shipment }) {
+// TODO: buggy
+export default function Edit({
+    shipment,
+    canUpdate = false,
+    canChangeStatus = false,
+}) {
+    const { data, setData, patch } = useForm({
+        status: shipment.status,
+    });
+
+    // todo
+    const onChange = (value) => {
+        setData("status", value);
+        patch(route("shipments.changeStatus", shipment), {
+            onSuccess: () => {
+                toast.success("Státusz sikeresen módosítva!");
+            },
+        });
+    };
+
     return (
         <AuthenticatedLayout>
             <Head title={`Munka #${shipment.id}`} />
@@ -52,9 +67,38 @@ export default function Edit({ shipment }) {
                         </span>
                     </div>
                     <div>
-                        Státusz:{" "}
+                        Státusz:
+                        {canChangeStatus ? (
+                            <SelectInput
+                                value={data.status}
+                                onChange={(e) => onChange(e.target.value)}
+                                className="ml-3 my-1"
+                            >
+                                {Object.keys(SHIPMENT_STATUS).map(
+                                    (status, i) => (
+                                        <option key={i} value={status}>
+                                            {SHIPMENT_STATUS[status]}
+                                        </option>
+                                    )
+                                )}
+                            </SelectInput>
+                        ) : (
+                            <span className="text-indigo-400 font-bold">
+                                {" "}
+                                {SHIPMENT_STATUS[shipment.status]}
+                            </span>
+                        )}
+                    </div>
+                    <div>
+                        Rögzítés dátuma:{" "}
                         <span className="text-indigo-400 font-bold">
-                            {SHIPMENT_STATUS[shipment.status]}
+                            {shipment.created_at}
+                        </span>
+                    </div>
+                    <div>
+                        Utolsó módosítás dátuma:{" "}
+                        <span className="text-indigo-400 font-bold">
+                            {shipment.updated_at}
                         </span>
                     </div>
                 </div>
@@ -66,12 +110,14 @@ export default function Edit({ shipment }) {
                         Vissza
                     </Link>
 
-                    <Link
-                        href={route("shipments.edit", shipment)}
-                        className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
-                    >
-                        Szerkesztés
-                    </Link>
+                    {canUpdate && (
+                        <Link
+                            href={route("shipments.edit", shipment)}
+                            className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
+                        >
+                            Szerkesztés
+                        </Link>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

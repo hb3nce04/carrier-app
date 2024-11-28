@@ -2,6 +2,7 @@
 
 use App\Models\Carrier;
 use App\Models\Consignee;
+use App\ShipmentStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,7 +19,7 @@ return new class extends Migration {
             $table->string("arrival_address")->required();
             $table->foreignIdFor(Consignee::class)->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
             $table->foreignIdFor(Carrier::class)->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
-            $table->enum("status", ["issued", "progress", "finished", "failed"])->required()->default("issued");
+            $table->enum("status", array_column(ShipmentStatus::cases(), 'value'))->required()->default(ShipmentStatus::ISSUED);
             $table->timestamps();
         });
     }

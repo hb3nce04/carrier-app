@@ -41,6 +41,10 @@ export const SHIPMENT_TABLE_COLUMNS = [
         name: "carrier",
         text: "Fuvarozó",
     },
+    {
+        name: "created_at",
+        text: "Rögzítve",
+    },
 ];
 
 export const VEHICLE_TABLE_COLUMNS = [

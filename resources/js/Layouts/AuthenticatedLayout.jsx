@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const { user } = usePage().props.auth;
-
+    console.log(user);
     const getDisplayedName = () => {
         if (user.is_admin) {
             if (user.nickname) {

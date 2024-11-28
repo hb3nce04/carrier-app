@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Carrier;
+use App\ShipmentStatus;
 use Database\Factories\ConsigneeFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,7 @@ class ShipmentFactory extends Factory
             "departure_address" => fake()->address(),
             "arrival_address" => fake()->address(),
             "consignee_id" => ConsigneeFactory::new()->create()->id,
-            "status" => fake()->randomElement(["issued", "progress", "finished", "failed"]),
+            "status" => fake()->randomElement(array_column(ShipmentStatus::cases(), 'value')),
         ];
     }
 

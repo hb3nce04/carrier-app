@@ -5,7 +5,6 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/custom/SelectInput";
 import { SHIPMENT_STATUS } from "@/consts";
 import toast from "react-hot-toast";
@@ -41,10 +40,7 @@ export default function Create({ carriers }) {
 
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 text-white">
                 <h1 className="text-4xl font-light">Új munka létrehozása</h1>
-                <form
-                    onSubmit={onSubmit}
-                    className=" mt-5 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
-                >
+                <form onSubmit={onSubmit} className="mt-5">
                     <div>
                         <InputLabel
                             htmlFor="departure_address"

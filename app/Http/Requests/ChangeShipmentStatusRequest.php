@@ -3,17 +3,17 @@
 namespace App\Http\Requests;
 
 use App\ShipmentStatus;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class ShipmentRequest extends FormRequest
+class ChangeShipmentStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->is_admin;
+        return true;
     }
 
     /**
@@ -24,12 +24,6 @@ class ShipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "departure_address" => "required|string|min:3|max:255",
-            "arrival_address" => "required|string|min:3|max:255",
-            "consignee_first_name" => "required|string",
-            "consignee_last_name" => "required|string",
-            "consignee_phone_number" => "required|string",
-            "carrier_id" => "numeric",
             "status" => Rule::in(ShipmentStatus::cases()),
         ];
     }
