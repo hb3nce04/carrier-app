@@ -9,11 +9,11 @@ export const LINKS = [
         text: "Munkák",
         protected: false,
     },
-    {
-        name: "vehicles.index",
-        text: "Járművek",
-        protected: true,
-    },
+    // {
+    //     name: "vehicles.index",
+    //     text: "Járművek",
+    //     protected: true,
+    // },
 ];
 
 export const SHIPMENT_TABLE_COLUMNS = [

@@ -3,20 +3,33 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { SHIPMENT_STATUS } from "@/consts";
 import SelectInput from "@/Components/custom/SelectInput";
 import toast from "react-hot-toast";
+import DangerButton from "@/Components/DangerButton";
+import PrimaryButton from "@/Components/PrimaryButton";
 
-// TODO: buggy
 export default function Edit({
     shipment,
-    canUpdate = false,
-    canChangeStatus = false,
+    can = { update: false, changeStatus: false, delete: false },
 }) {
-    const { data, setData, patch } = useForm({
+    const {
+        data,
+        setData,
+        delete: destroy,
+        patch,
+    } = useForm({
         status: shipment.status,
     });
 
-    // todo
-    const onChange = (value) => {
-        setData("status", value);
+    const onSubmitDelete = (e) => {
+        e.preventDefault();
+        destroy(route("shipments.destroy", shipment.id), {
+            onSuccess: () => {
+                toast.success("Munka sikeresen törölve!");
+            },
+        });
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
         patch(route("shipments.changeStatus", shipment), {
             onSuccess: () => {
                 toast.success("Státusz sikeresen módosítva!");
@@ -67,26 +80,36 @@ export default function Edit({
                         </span>
                     </div>
                     <div>
-                        Státusz:
-                        {canChangeStatus ? (
-                            <SelectInput
-                                value={data.status}
-                                onChange={(e) => onChange(e.target.value)}
-                                className="ml-3 my-1"
+                        {can.changeStatus ? (
+                            <form
+                                onSubmit={onSubmit}
+                                className="flex flex-row items-center gap-2"
                             >
-                                {Object.keys(SHIPMENT_STATUS).map(
-                                    (status, i) => (
-                                        <option key={i} value={status}>
-                                            {SHIPMENT_STATUS[status]}
-                                        </option>
-                                    )
-                                )}
-                            </SelectInput>
+                                Státusz:
+                                <SelectInput
+                                    value={data.status}
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
+                                    className="ml-3 my-1"
+                                >
+                                    {Object.keys(SHIPMENT_STATUS).map(
+                                        (status, i) => (
+                                            <option key={i} value={status}>
+                                                {SHIPMENT_STATUS[status]}
+                                            </option>
+                                        )
+                                    )}
+                                </SelectInput>
+                                <PrimaryButton>Mentés</PrimaryButton>
+                            </form>
                         ) : (
-                            <span className="text-indigo-400 font-bold">
-                                {" "}
-                                {SHIPMENT_STATUS[shipment.status]}
-                            </span>
+                            <>
+                                Státusz:{" "}
+                                <span className="text-indigo-400 font-bold">
+                                    {SHIPMENT_STATUS[shipment.status]}
+                                </span>
+                            </>
                         )}
                     </div>
                     <div>
@@ -110,13 +133,19 @@ export default function Edit({
                         Vissza
                     </Link>
 
-                    {canUpdate && (
+                    {can.update && (
                         <Link
                             href={route("shipments.edit", shipment)}
                             className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                         >
                             Szerkesztés
                         </Link>
+                    )}
+
+                    {can.delete && (
+                        <form onSubmit={onSubmitDelete}>
+                            <DangerButton>Törlés</DangerButton>
+                        </form>
                     )}
                 </div>
             </div>

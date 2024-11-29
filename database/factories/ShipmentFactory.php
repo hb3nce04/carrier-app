@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Carrier;
-use App\ShipmentStatus;
+use App\Enums\ShipmentStatus;
 use Database\Factories\ConsigneeFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

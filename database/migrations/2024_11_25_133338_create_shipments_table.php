@@ -2,7 +2,7 @@
 
 use App\Models\Carrier;
 use App\Models\Consignee;
-use App\ShipmentStatus;
+use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

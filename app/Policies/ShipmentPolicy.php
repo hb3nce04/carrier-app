@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Carrier;
 use App\Models\Shipment;
-use App\ShipmentStatus;
+use App\Enums\ShipmentStatus;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 

@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
         $carrier = Carrier::factory()->create([
             'first_name' => "Ádám",
             'last_name' => "Fuvar",
-            'email' => 'fuvar@adam.com',
+            'email' => 'adam@fuvar.com',
         ]);
         $admin = Carrier::factory()->create([
             'first_name' => "József",
             'last_name' => "Admin",
-            'email' => 'admin@jozsi.com',
+            'email' => 'admin.jozsef@fuvar.com',
         ]);
-        Admin::factory(1)->withCarrier($admin)->create();
-        Vehicle::factory(1)->withCarrier($carrier)->create();
-        Shipment::factory(3)->withCarrier($carrier)->create();
+        Admin::factory()->withCarrier($admin)->create();
+        Vehicle::factory()->withCarrier($carrier)->create();
+        Shipment::factory(5)->withCarrier($carrier)->create();
     }
 }

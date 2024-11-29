@@ -2,18 +2,20 @@
 
 namespace App\Http\Requests;
 
-use App\ShipmentStatus;
+use App\Models\Shipment;
+use App\Enums\ShipmentStatus;
+use Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ShipmentRequest extends FormRequest
+class ShipmentUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->is_admin;
+        return Gate::allows('update', Shipment::class);
     }
 
     /**
