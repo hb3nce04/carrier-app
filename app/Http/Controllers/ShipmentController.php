@@ -21,17 +21,19 @@ class ShipmentController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $status = $request->query("status");
+
         $query = $user->can("viewAny", Shipment::class) ? Shipment::query() : Shipment::query()->where("carrier_id", $user->id);
-        if (request("status") && $user->can("filter", Shipment::class)) {
-            $query->where("status", $request->query("status"));
+        if ($status && $user->can("filter", Shipment::class)) {
+            $query->where("status", $status);
         }
-        $shipments = $query->get();
+        $shipments = $query->paginate(perPage: 10);
 
         return Inertia::render('Shipment/Index', [
             "shipments" => ShipmentResource::collection($shipments),
-            "queryParams" => request()->query() ?: null,
-            "filter" => $user->can("filter", Shipment::class),
+            "queryParams" => ["status" => $status],
             "can" => [
+                "filter" => $user->can("filter", Shipment::class),
                 "create" => $user->can("create", Shipment::class),
                 "update" => $user->can("update", Shipment::class),
                 "delete" => $user->can("delete", Shipment::class)
@@ -53,20 +55,22 @@ class ShipmentController extends Controller
 
     public function store(ShipmentCreateRequest $request)
     {
+        $data = $request->validated();
+
         $consignee = Consignee::create([
-            "first_name" => $request->consignee_first_name,
-            "last_name" => $request->consignee_last_name,
-            "phone_number" => $request->consignee_phone_number,
+            "first_name" => $data["consignee_first_name"],
+            "last_name" => $data["consignee_last_name"],
+            "phone_number" => $data["consignee_phone_number"],
         ]);
-        $carrier = Carrier::find($request->carrier_id)->doesntHave("admin")->first();
+        $carrier = Carrier::where("id", $data["carrier_id"])->doesntHave("admin")->first();
         if (!$carrier) {
             return abort(400);
         }
         Shipment::create([
-            "departure_address" => $request->departure_address,
-            "arrival_address" => $request->arrival_address,
+            "departure_address" => $data["departure_address"],
+            "arrival_address" => $data["arrival_address"],
             "carrier_id" => $carrier->id,
-            "status" => $request->status,
+            "status" => $data["status"],
             "consignee_id" => $consignee->id,
         ]);
 
@@ -103,23 +107,26 @@ class ShipmentController extends Controller
 
     public function update(ShipmentUpdateRequest $request, Shipment $shipment)
     {
-        $carrier = Carrier::find($request->carrier_id)->doesntHave("admin")->first();
+        $data = $request->validated();
+        $user = $request->user();
+
+        $carrier = Carrier::where("id", $data["carrier_id"])->doesntHave("admin")->first();
         if (!$carrier) {
             return abort(400);
         }
         $shipment->consignee()->update([
-            "first_name" => $request->consignee_first_name,
-            "last_name" => $request->consignee_last_name,
-            "phone_number" => $request->consignee_phone_number,
+            "first_name" => $data["consignee_first_name"],
+            "last_name" => $data["consignee_last_name"],
+            "phone_number" => $data["consignee_phone_number"],
         ]);
         $shipment->update([
-            "departure_address" => $request->departure_address,
-            "arrival_address" => $request->arrival_address,
+            "departure_address" => $data["departure_address"],
+            "arrival_address" => $data["arrival_address"],
             "carrier_id" => $carrier->id,
-            "status" => $request->status,
+            "status" => $data["status"],
         ]);
         if ($shipment->status === ShipmentStatus::FAILED) {
-            $shipment->carrier->notify(new ShipmentFailedNotification($shipment, $request->user()->last_name . " " . $request->user()->first_name));
+            $shipment->carrier->notify(new ShipmentFailedNotification($shipment, $user->last_name . " " . $user->first_name));
         }
 
         return redirect()->route('shipments.index');
@@ -127,8 +134,10 @@ class ShipmentController extends Controller
 
     public function changeStatus(ShipmentUpdateStatusRequest $request, Shipment $shipment)
     {
+        $data = $request->validated();
+
         $shipment->update([
-            "status" => $request->status
+            "status" => $data["status"],
         ]);
 
         return redirect()->route('shipments.show', $shipment);

@@ -13,8 +13,8 @@ return new class extends Migration {
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('nickname')->unique()->nullable();
-            $table->foreignIdFor(Carrier::class)->unique()->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
+            $table->string('nickname', 50)->unique()->nullable();
+            $table->foreignIdFor(Carrier::class)->unique()->constrained();
             $table->timestamps();
         });
     }

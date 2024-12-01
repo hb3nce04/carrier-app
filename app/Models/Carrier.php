@@ -25,6 +25,7 @@ class Carrier extends Authenticatable
         'last_name',
         'email',
         'password',
+        'email_verified_at',
     ];
 
     /**

@@ -15,11 +15,11 @@ return new class extends Migration {
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
-            $table->string("departure_address")->required();
-            $table->string("arrival_address")->required();
-            $table->foreignIdFor(Consignee::class)->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
-            $table->foreignIdFor(Carrier::class)->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
-            $table->enum("status", array_column(ShipmentStatus::cases(), 'value'))->required()->default(ShipmentStatus::ISSUED);
+            $table->string("departure_address", 100);
+            $table->string("arrival_address", 100);
+            $table->foreignIdFor(Consignee::class)->constrained();
+            $table->foreignIdFor(Carrier::class)->constrained();
+            $table->enum("status", array_column(ShipmentStatus::cases(), 'value'))->index()->default(ShipmentStatus::ISSUED);
             $table->timestamps();
         });
     }

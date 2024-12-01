@@ -13,10 +13,10 @@ return new class extends Migration {
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string("brand")->required();
-            $table->string("model")->nullable();
-            $table->string("plate_number")->required();
-            $table->foreignIdFor(Carrier::class)->unique()->constrained()->required()->onUpdate("cascade")->onDelete("cascade");
+            $table->string("brand", 50);
+            $table->string("model", 50)->nullable();
+            $table->string("plate_number", 10)->unique();
+            $table->foreignIdFor(Carrier::class)->unique()->constrained();
             $table->timestamps();
         });
     }

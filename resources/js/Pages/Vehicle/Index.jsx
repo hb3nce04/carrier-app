@@ -5,8 +5,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 
 export default function Index({ vehicles }) {
-    const { user } = usePage().props.auth;
-
     const rows = vehicles.data.map((vehicle) => {
         return {
             ...vehicle,

@@ -1,3 +1,4 @@
+import Pagination from "@/Components/custom/Pagination";
 import SelectInput from "@/Components/custom/SelectInput";
 import { Table } from "@/Components/custom/Table";
 import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts";
@@ -6,9 +7,8 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 
 export default function Index({
     shipments,
-    filter = false,
-    can = { create: false, update: false, delete: false },
-    queryParams = null,
+    can = { filter: false, create: false, update: false, delete: false },
+    queryParams = { status: "" },
 }) {
     const { user } = usePage().props.auth;
     queryParams = queryParams || {};
@@ -41,7 +41,7 @@ export default function Index({
 
             <div className="relative overflow-x-auto text-gray-500 dark:text-gray-400">
                 <div className="flex justify-end my-4 gap-4 items-center">
-                    {filter && (
+                    {can.filter && (
                         <SelectInput
                             value={queryParams.status}
                             onChange={(e) => changeStatus(e.target.value)}
@@ -76,6 +76,7 @@ export default function Index({
                     canDelete={can.delete}
                 />
             </div>
+            <Pagination links={shipments.meta.links} />
         </AuthenticatedLayout>
     );
 }

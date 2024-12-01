@@ -26,12 +26,12 @@ class ShipmentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "departure_address" => "required|string|min:3|max:255",
-            "arrival_address" => "required|string|min:3|max:255",
-            "consignee_first_name" => "required|string",
-            "consignee_last_name" => "required|string",
-            "consignee_phone_number" => "required|string",
-            "carrier_id" => "numeric",
+            "departure_address" => "required|string|min:3|max:100",
+            "arrival_address" => "required|string|min:3|max:100",
+            "consignee_first_name" => "required|string|max:50",
+            "consignee_last_name" => "required|string|max:50",
+            "consignee_phone_number" => "required|string|max:15",
+            "carrier_id" => "required|numeric",
             "status" => Rule::in(ShipmentStatus::cases()),
         ];
     }

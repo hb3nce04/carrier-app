@@ -16,20 +16,20 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
             'email' => [
                 'required',
                 'string',
                 'lowercase',
                 'email',
-                'max:255',
+                'max:50',
                 Rule::unique(Carrier::class)->ignore($this->user()->id),
             ],
         ];
 
         if ($this->user()->is_admin) {
-            $rules["nickname"] = ['required', 'string', 'max:255'];
+            $rules["nickname"] = ['required', 'string', 'max:50'];
         }
 
 

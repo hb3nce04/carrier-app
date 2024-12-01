@@ -1,37 +1,23 @@
-import { GrPrevious, GrNext } from "react-icons/gr";
+import { Link } from "@inertiajs/react";
 
-// Todo
-export default function Pagination() {
+export default function Pagination({ links }) {
     return (
-        <div className="flex justify-center mt-5">
-            <ul class="flex items-center -space-x-px h-8 text-sm">
-                <li>
-                    <a
-                        href="#"
-                        class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                        <span class="sr-only">Previous</span>
-                        <GrPrevious />
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                        1
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                        <span class="sr-only">Next</span>
-                        <GrNext />
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <nav className="text-center mt-4">
+            {links.map((link) => (
+                <Link
+                    preserveScroll
+                    href={link.url}
+                    key={link.label}
+                    className={
+                        "inline-block py-2 px-3 rounded-lg text-xs " +
+                        (link.active ? "bg-gray-800" : "") +
+                        (link.url
+                            ? " text-gray-200 hover:bg-gray-800"
+                            : "text-gray-500 cursor-not-allowed")
+                    }
+                    dangerouslySetInnerHTML={{ __html: link.label }}
+                ></Link>
+            ))}
+        </nav>
     );
 }

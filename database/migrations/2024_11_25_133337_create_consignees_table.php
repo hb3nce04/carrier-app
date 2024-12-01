@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('consignees', function (Blueprint $table) {
             $table->id();
-            $table->string("first_name")->required();
-            $table->string("last_name")->required();
-            $table->string("phone_number")->required();
+            $table->string("first_name", 50);
+            $table->string("last_name", 50);
+            $table->string("phone_number", 15);
             $table->timestamps();
         });
     }

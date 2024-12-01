@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
         ]);
         Admin::factory()->withCarrier($admin)->create();
         Vehicle::factory()->withCarrier($carrier)->create();
-        Shipment::factory(5)->withCarrier($carrier)->create();
+        Shipment::factory(count: 50)->withCarrier($carrier)->create();
     }
 }
