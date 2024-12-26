@@ -39,8 +39,6 @@ class ProfileController extends Controller
             $request->user()->admin()->update(['nickname' => $request->nickname]);
         }
 
-        $request->user()->save();
-
         return Redirect::route('profile.edit');
     }
 

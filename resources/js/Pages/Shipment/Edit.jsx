@@ -15,8 +15,8 @@ export default function Edit({ shipment, carriers }) {
     const { data, setData, put, errors } = useForm({
         departure_address: shipment.departure_address,
         arrival_address: shipment.arrival_address,
-        consignee_last_name: shipment.consignee.last_name,
-        consignee_first_name: shipment.consignee.first_name,
+        consignee_last_name: shipment.consignee.full_name.split(" ")[1],
+        consignee_first_name: shipment.consignee.full_name.split(" ")[0],
         consignee_phone_number: shipment.consignee.phone_number,
         carrier_id: shipment.carrier.id,
         status: shipment.status,
@@ -184,8 +184,7 @@ export default function Edit({ shipment, carriers }) {
                                 >
                                     {carriers.data.map((carrier, i) => (
                                         <option key={i} value={carrier.id}>
-                                            {carrier.last_name}{" "}
-                                            {carrier.first_name}
+                                            {carrier.full_name}
                                         </option>
                                     ))}
                                 </SelectInput>

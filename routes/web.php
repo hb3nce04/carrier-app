@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\VehicleController;
@@ -17,6 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/shipments/{shipment}/status', [ShipmentController::class, 'changeStatus'])->name('shipments.changeStatus');
 
     Route::resource('vehicles', VehicleController::class);
+
+    Route::resource('carriers', CarrierController::class);
 });
 
 Route::middleware('auth')->group(function () {

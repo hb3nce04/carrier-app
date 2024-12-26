@@ -166,9 +166,12 @@ export default function Create({ carriers }) {
                                 setData("carrier_id", e.target.value)
                             }
                         >
+                            {carriers.data.length === 0 && <option key={0} value={0}>
+                                Jelenleg nincs fuvarozó a rendszerben!
+                            </option>}
                             {carriers.data.map((carrier, i) => (
                                 <option key={i} value={carrier.id}>
-                                    {carrier.last_name} {carrier.first_name}
+                                    {carrier.full_name}
                                 </option>
                             ))}
                         </SelectInput>

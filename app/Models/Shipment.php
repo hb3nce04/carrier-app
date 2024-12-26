@@ -18,6 +18,8 @@ class Shipment extends Model
         "status",
     ];
 
+    protected $with = ['consignee', 'carrier'];
+
     public function consignee()
     {
         return $this->belongsTo(Consignee::class);
