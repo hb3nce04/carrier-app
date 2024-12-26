@@ -11,7 +11,7 @@ use App\Models\Carrier;
 use App\Models\Consignee;
 use App\Notifications\ShipmentFailedNotification;
 use App\Enums\ShipmentStatus;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use App\Models\Shipment;
 use Illuminate\Http\Request;

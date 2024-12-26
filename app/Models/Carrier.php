@@ -15,6 +15,8 @@ class Carrier extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -72,6 +74,15 @@ class Carrier extends Authenticatable
     public function admin(): HasOne
     {
         return $this->hasOne(Admin::class);
+    }
+
+    public function vehicle()
+    {
+        return $this->hasOne(Vehicle::class);
+    }
+
+    public function getFullName(): string {
+        return "$this->first_name $this->last_name";
     }
 
     /**

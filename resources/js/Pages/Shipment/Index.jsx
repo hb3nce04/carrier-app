@@ -3,20 +3,19 @@ import SelectInput from "@/Components/custom/SelectInput";
 import { Table } from "@/Components/custom/Table";
 import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 export default function Index({
     shipments,
     can = { filter: false, create: false, update: false, delete: false },
     queryParams = { status: "" },
 }) {
-    const { user } = usePage().props.auth;
     queryParams = queryParams || {};
     const rows = shipments.data.map((shipment) => {
         return {
             ...shipment,
-            consignee: `${shipment.consignee.last_name} ${shipment.consignee.first_name} (${shipment.consignee.phone_number})`,
-            carrier: `${shipment.carrier.last_name} ${shipment.carrier.first_name}`,
+            consignee: `${shipment.consignee.full_name} (${shipment.consignee.phone_number})`,
+            carrier: `${shipment.carrier.full_name}`,
             status: SHIPMENT_STATUS[shipment.status],
         };
     });

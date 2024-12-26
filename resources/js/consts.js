@@ -9,9 +9,24 @@ export const LINKS = [
         text: "Munkák",
         protected: false,
     },
+    {
+        name: "vehicles.index",
+        text: "Járművek",
+        protected: true,
+    },
+    {
+        name: "carriers.index",
+        text: "Fuvarozók",
+        protected: true,
+    },
     // {
-    //     name: "vehicles.index",
-    //     text: "Járművek",
+    //     name: "carriers.index",
+    //     text: "Címzettek",
+    //     protected: true,
+    // },
+    // {
+    //     name: "admins.index",
+    //     text: "Adminisztrátorok",
     //     protected: true,
     // },
 ];
@@ -61,10 +76,37 @@ export const VEHICLE_TABLE_COLUMNS = [
         text: "Model",
     },
     {
+        name: "plate_number",
+        text: "Rendszám",
+    },
+    {
         name: "carrier",
         text: "Tulajdonos",
     },
+    {
+        name: "created_at",
+        text: "Rögzítve",
+    },
 ];
+
+export const CARRIER_TABLE_COLUMNS = [
+    {
+        name: "id",
+        text: "#",
+    },
+    {
+        name: "full_name",
+        text: "Név",
+    },
+    {
+        name: "email",
+        text: "E-mail cím",
+    },
+    {
+        name: "created_at",
+        text: "Regisztrálva",
+    },
+]
 
 export const SHIPMENT_STATUS = {
     issued: "Kiosztva",
