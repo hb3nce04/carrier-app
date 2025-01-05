@@ -11,14 +11,13 @@ class Shipment extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        "departure_address",
-        "arrival_address",
-        "consignee_id",
-        "carrier_id",
-        "status",
+        'departure_address_id',
+        'consignee_id',
+        'carrier_id',
+        'status',
     ];
 
-    protected $with = ['consignee', 'carrier'];
+    protected $with = ['consignee', 'carrier', 'address'];
 
     public function consignee()
     {
@@ -28,5 +27,10 @@ class Shipment extends Model
     public function carrier()
     {
         return $this->belongsTo(Carrier::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'departure_address_id');
     }
 }

@@ -6,7 +6,7 @@ use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\Vehicle;
 
-class VehiclePolicy
+class UserPolicy
 {
     /**
      * Determine whether the user can view any models.

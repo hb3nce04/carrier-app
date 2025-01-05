@@ -1,9 +1,9 @@
 import DangerButton from "@/Components/DangerButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/form/InputError.jsx";
+import InputLabel from "@/Components/form/InputLabel.jsx";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
+import TextInput from "@/Components/form/TextInput.jsx";
 import { useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";

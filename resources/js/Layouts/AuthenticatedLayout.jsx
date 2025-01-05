@@ -1,24 +1,13 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import Dropdown from "@/Components/Dropdown";
+import Dropdown from "@/Components/form/Dropdown.jsx";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { getRoleName, LINKS } from "@/consts";
+import {LINKS, Role} from "@/consts.js";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function AuthenticatedLayout({ header, children }) {
+export default function AuthenticatedLayout({ children }) {
     const { user } = usePage().props.auth;
-    const getDisplayedName = () => {
-        if (user.is_admin) {
-            if (user.nickname) {
-                return user.nickname;
-            } else {
-                `${user.last_name} ${user.first_name}`;
-            }
-        } else {
-            return `${user.last_name} ${user.first_name}`;
-        }
-    };
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -37,7 +26,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 {LINKS.map((link) => {
-                                    return (user.is_admin && link.protected) ||
+                                    return (user.role === Role.ADMIN && link.protected) ||
                                         !link.protected ? (
                                         <NavLink
                                             key={link.name}
@@ -61,11 +50,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 className="gap-1 inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
                                             >
                                                 <span>
-                                                    {getDisplayedName()}
+                                                    {user.name}
                                                 </span>
                                                 <span>
                                                     (
-                                                    {getRoleName(user.is_admin)}
+                                                    {user.role}
                                                     )
                                                 </span>
                                                 <svg
@@ -169,8 +158,8 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
                             <div className="flex gap-1 text-base font-medium text-gray-800 dark:text-gray-200">
-                                <span>{getDisplayedName()}</span>
-                                <span>({getRoleName(user.is_admin)})</span>
+                                <span>{user.name}</span>
+                                <span>({user.role})</span>
                             </div>
                             <div className="text-sm font-medium text-gray-500">
                                 {user.email}

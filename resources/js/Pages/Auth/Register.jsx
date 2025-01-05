@@ -1,15 +1,14 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/form/InputError.jsx";
+import InputLabel from "@/Components/form/InputLabel.jsx";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
+import TextInput from "@/Components/form/TextInput.jsx";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        last_name: "",
-        first_name: "",
+        name: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -36,45 +35,24 @@ export default function Register() {
             <Head title="Regisztráció" />
 
             <form onSubmit={submit}>
-                <div className="flex gap-2">
+                <div>
                     <div>
-                        <InputLabel htmlFor="last_name" value="Vezetéknév" />
+                        <InputLabel htmlFor="name" value="Felhasználónév" />
 
                         <TextInput
-                            id="last_name"
-                            name="last_name"
-                            value={data.last_name}
+                            id="name"
+                            name="name"
+                            value={data.name}
                             className="mt-1 block w-full"
-                            autoComplete="last_name"
-                            isFocused={true}
+                            autoComplete="name"
                             onChange={(e) =>
-                                setData("last_name", e.target.value)
+                                setData("name", e.target.value)
                             }
                             required
                         />
 
                         <InputError
-                            message={errors.last_name}
-                            className="mt-2"
-                        />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="first_name" value="Keresztnév" />
-
-                        <TextInput
-                            id="first_name"
-                            name="first_name"
-                            value={data.first_name}
-                            className="mt-1 block w-full"
-                            autoComplete="first_name"
-                            onChange={(e) =>
-                                setData("first_name", e.target.value)
-                            }
-                            required
-                        />
-
-                        <InputError
-                            message={errors.first_name}
+                            message={errors.name}
                             className="mt-2"
                         />
                     </div>
@@ -89,7 +67,7 @@ export default function Register() {
                         name="email"
                         value={data.email}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="email"
                         onChange={(e) => setData("email", e.target.value)}
                         required
                     />
@@ -106,7 +84,7 @@ export default function Register() {
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
-                        autoComplete="new-password"
+                        autoComplete="password"
                         onChange={(e) => setData("password", e.target.value)}
                         required
                     />
@@ -126,7 +104,7 @@ export default function Register() {
                         name="password_confirmation"
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
-                        autoComplete="new-password"
+                        autoComplete="password_confirmation"
                         onChange={(e) =>
                             setData("password_confirmation", e.target.value)
                         }

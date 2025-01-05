@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Carrier;
 use App\Enums\ShipmentStatus;
-use Database\Factories\ConsigneeFactory;
+use App\Models\StreetSuffix;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,15 +20,14 @@ class ShipmentFactory extends Factory
     public function definition(): array
     {
         return [
-            "departure_address" => fake()->address(),
-            "arrival_address" => fake()->address(),
-            "consignee_id" => ConsigneeFactory::new()->create()->id,
-            "status" => fake()->randomElement(array_column(ShipmentStatus::cases(), 'value')),
+            'departure_address_id' => AddressFactory::new()->create()->id,
+            'consignee_id' => ConsigneeFactory::new()->create()->id,
+            'status' => fake()->randomElement(array_column(ShipmentStatus::cases(), 'value')),
         ];
     }
 
     public function withCarrier(Carrier $carrier)
     {
-        return $this->state(["carrier_id" => $carrier->id]);
+        return $this->state(['carrier_id' => $carrier->id]);
     }
 }

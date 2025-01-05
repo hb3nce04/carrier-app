@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Address;
 use App\Models\Carrier;
+use App\Models\StreetSuffix;
+use App\Models\User;
 use App\Models\Consignee;
 use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +18,10 @@ return new class extends Migration {
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
-            $table->string("departure_address", 100);
-            $table->string("arrival_address", 100);
+            $table->foreignIdFor(Address::class, 'departure_address_id')->constrained();
             $table->foreignIdFor(Consignee::class)->constrained();
             $table->foreignIdFor(Carrier::class)->constrained();
-            $table->enum("status", array_column(ShipmentStatus::cases(), 'value'))->index()->default(ShipmentStatus::ISSUED);
+            $table->enum('status', array_column(ShipmentStatus::cases(), 'value'))->index()->default(ShipmentStatus::ISSUED);
             $table->timestamps();
         });
     }

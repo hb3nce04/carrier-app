@@ -1,21 +1,37 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
-
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
+import {Head, useForm} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
-import SelectInput from "@/Components/custom/SelectInput";
-import { SHIPMENT_STATUS } from "@/consts";
+import {SHIPMENT_STATUS} from "@/consts.js";
 import toast from "react-hot-toast";
+import FormTitle from "@/Components/form/FormTitle.jsx";
+import SelectInputGroup from "@/Components/form/SelectInputGroup.jsx";
+import SecondaryLink from "@/Components/SecondaryLink.jsx";
+import {renderInputFields, extractFieldIds, handleSelectChange} from "@/utils.jsx";
 
-export default function Create({ carriers }) {
-    const { data, setData, post, errors } = useForm({
-        departure_address: "",
-        arrival_address: "",
-        consignee_last_name: "",
-        consignee_first_name: "",
-        consignee_phone_number: "",
+const departureFields = [
+    {id: "departure_postal", label: "Irányítószám", type: "number"},
+    {id: "departure_city", label: "Város"},
+    {id: "departure_street_name", label: "Utcanév"},
+    {id: "departure_street_suffix", label: "Utca jelleg"},
+    {id: "departure_street_number", label: "Házszám"},
+];
+
+const consigneeFields = [
+    {id: "consignee_last_name", label: "Címzett vezetékneve"},
+    {id: "consignee_first_name", label: "Címzett keresztneve"},
+    {id: "consignee_phone_number", label: "Címzett telefonszáma"},
+    {id: "consignee_postal", label: "Irányítószám", type: "number"},
+    {id: "consignee_city", label: "Város"},
+    {id: "consignee_street_name", label: "Utcanév"},
+    {id: "consignee_street_suffix", label: "Utca jelleg"},
+    {id: "consignee_street_number", label: "Házszám"},
+];
+
+export default function Create({carriers, streetSuffixes, consignees}) {
+    const {data, setData, post, errors, processing} = useForm({
+        ...extractFieldIds(departureFields),
+        ...extractFieldIds(consigneeFields),
+        suffix: 1,
         carrier_id: 1,
         status: "issued",
     });
@@ -25,8 +41,7 @@ export default function Create({ carriers }) {
         post(route("shipments.store"), {
             onSuccess: () => {
                 toast.success("Munka sikeresen létrehozva!");
-            },
-            onError: () => {
+            }, onError: () => {
                 if (!errors) {
                     toast.error("Hiba történt a munka létrehozása során!");
                 }
@@ -34,180 +49,64 @@ export default function Create({ carriers }) {
         });
     };
 
-    return (
-        <AuthenticatedLayout>
-            <Head title={"Új munka létrehozása"} />
+    return (<AuthenticatedLayout>
+            <Head title={"Új munka létrehozása"}/>
 
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 text-white">
                 <h1 className="text-4xl font-light">Új munka létrehozása</h1>
                 <form onSubmit={onSubmit} className="mt-5">
-                    <div>
-                        <InputLabel
-                            htmlFor="departure_address"
-                            value="Indulási cím"
-                        />
-                        <TextInput
-                            id="departure_address"
-                            type="text"
-                            name="text"
-                            value={data.departure_address}
-                            className="mt-1 block w-full"
-                            onChange={(e) =>
-                                setData("departure_address", e.target.value)
-                            }
-                        />
-                        <InputError
-                            message={errors.departure_address}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <InputLabel
-                            htmlFor="arrival_address"
-                            value="Érkezési cím"
-                        />
-                        <TextInput
-                            id="arrival_address"
-                            type="text"
-                            name="text"
-                            value={data.arrival_address}
-                            className="mt-1 block w-full"
-                            onChange={(e) =>
-                                setData("arrival_address", e.target.value)
-                            }
-                        />
-                        <InputError
-                            message={errors.arrival_address}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <div className="mt-4 flex gap-2">
-                        <div className="w-full">
-                            <InputLabel
-                                htmlFor="consignee_last_name"
-                                value="Címzett vezetékneve"
-                            />
-                            <TextInput
-                                id="consignee_last_name"
-                                type="text"
-                                name="text"
-                                value={data.consignee_last_name}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData(
-                                        "consignee_last_name",
-                                        e.target.value
-                                    )
-                                }
-                            />
-                            <InputError
-                                message={errors.consignee_last_name}
-                                className="mt-2"
-                            />
+                    <div
+                        className="flex flex-col gap-2">
+                        <FormTitle>Indulási cím</FormTitle>
+                        <div className="flex gap-2">{renderInputFields(departureFields, data, errors, setData)}</div>
+                        <FormTitle className="mt-2">Címzett adatai</FormTitle>
+                        <div className="grid grid-cols-3 divide-x divide-slate-300 dark:divide-slate-700">
+                            <div className="mr-2 col-span-2">
+                                <div className="flex gap-2">{renderInputFields(consigneeFields.slice(0, 3), data, errors, setData)}</div>
+                                <div className="flex gap-2 mt-2">
+                                    {renderInputFields(consigneeFields.slice(3, 6), data, errors, setData)}
+                                    <SelectInputGroup id="suffix" label="Utca jellege" value={data.suffix}
+                                                      error={errors.suffix} setData={setData}>
+                                        {streetSuffixes.map((suffix, i) => (<option key={i} value={suffix.id}>
+                                            {suffix.name}
+                                        </option>))}
+                                    </SelectInputGroup>
+                                    {renderInputFields(consigneeFields.slice(7), data, errors, setData)}
+                                </div>
+                            </div>
+                            <div className="ml-2 flex items-center justify-center p-6">
+                                <SelectInputGroup id="carriers" label="Címzettek" value={data.carrier_id}
+                                                  error={errors.carriers}
+                                                  onChange={(e) => handleSelectChange(e, setData)}>
+                                    {carriers.data.length === 0 &&
+                                        <option>Jelenleg nincs fuvarozó a rendszerben!</option>}
+                                    {carriers.data.map((carrier, i) => (<option key={i} value={carrier.id}>
+                                        {carrier.full_name}
+                                    </option>))}
+                                </SelectInputGroup>
+                            </div>
                         </div>
-                        <div className="w-full">
-                            <InputLabel
-                                htmlFor="consignee_first_name"
-                                value="Címzett keresztneve"
-                            />
-                            <TextInput
-                                id="consignee_first_name"
-                                type="text"
-                                name="text"
-                                value={data.consignee_first_name}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData(
-                                        "consignee_first_name",
-                                        e.target.value
-                                    )
-                                }
-                            />
-                            <InputError
-                                message={errors.consignee_first_name}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div className="w-full">
-                            <InputLabel
-                                htmlFor="consignee_phone_number"
-                                value="Címzett telefonszáma"
-                            />
-                            <TextInput
-                                id="consignee_phone_number"
-                                type="text"
-                                name="text"
-                                value={data.consignee_phone_number}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData(
-                                        "consignee_phone_number",
-                                        e.target.value
-                                    )
-                                }
-                            />
-                            <InputError
-                                message={errors.consignee_phone_number}
-                                className="mt-2"
-                            />
-                        </div>
+                        <SelectInputGroup id="carriers" label="Fuvarozók" value={data.carrier_id}
+                                          error={errors.carriers}
+                                          onChange={(e) => handleSelectChange(e, setData)}>
+                            {carriers.data.length === 0 &&
+                                <option>Jelenleg nincs fuvarozó a rendszerben!</option>}
+                            {carriers.data.map((carrier, i) => (<option key={i} value={carrier.id}>
+                                {carrier.full_name}
+                            </option>))}
+                        </SelectInputGroup>
+                        <SelectInputGroup id="status" label="Státusz" value={data.status}
+                                          error={errors.status} setData={setData}>
+                            {Object.keys(SHIPMENT_STATUS).map((status, i) => (<option key={i} value={status}>
+                                {SHIPMENT_STATUS[status]}
+                            </option>))}
+                        </SelectInputGroup>
                     </div>
-
-                    <div className="mt-4">
-                        <InputLabel htmlFor="carriers" value="Fuvarozók" />
-                        <SelectInput
-                            id="carriers"
-                            name="carriers"
-                            value={data.carrier_id}
-                            className="mt-1 block w-full"
-                            onChange={(e) =>
-                                setData("carrier_id", e.target.value)
-                            }
-                        >
-                            {carriers.data.length === 0 && <option key={0} value={0}>
-                                Jelenleg nincs fuvarozó a rendszerben!
-                            </option>}
-                            {carriers.data.map((carrier, i) => (
-                                <option key={i} value={carrier.id}>
-                                    {carrier.full_name}
-                                </option>
-                            ))}
-                        </SelectInput>
-                        <InputError
-                            message={errors.carriers}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <InputLabel htmlFor="status" value="Státusz" />
-                        <SelectInput
-                            id="status"
-                            name="status"
-                            value={data.status}
-                            className="mt-1 block w-full"
-                            onChange={(e) => setData("status", e.target.value)}
-                        >
-                            {Object.keys(SHIPMENT_STATUS).map((status, i) => (
-                                <option key={i} value={status}>
-                                    {SHIPMENT_STATUS[status]}
-                                </option>
-                            ))}
-                        </SelectInput>
-                        <InputError message={errors.status} className="mt-2" />
-                    </div>
-
                     <div className="mt-6 flex gap-2 justify-end">
-                        <Link
-                            href={route("shipments.index")}
-                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-800"
-                        >
+                        <SecondaryLink href={route("shipments.index")}>
                             Vissza
-                        </Link>
-
-                        <PrimaryButton>Létrehozás</PrimaryButton>
+                        </SecondaryLink>
+                        <PrimaryButton disabled={processing}>Létrehozás</PrimaryButton>
                     </div>
                 </form>
             </div>

@@ -18,14 +18,13 @@ class ShipmentResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
-            "id" => $this->id,
-            "departure_address" => $this->departure_address,
-            "arrival_address" => $this->arrival_address,
-            "consignee" => new ConsigneeResource($this->consignee),
-            "carrier" => new CarrierResource($this->carrier),
-            "status" => $this->status,
-            "created_at" => (new Carbon($this->created_at))->format("Y-m-d"),
-            "updated_at" => (new Carbon($this->updated_at))->format("Y-m-d"),
+            'id' => $this->id,
+            'departure_address' => new AddressResource($this->address),
+            'consignee' => new ConsigneeResource($this->consignee),
+            'carrier' => new CarrierResource($this->carrier),
+            'status' => $this->status,
+            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
+            'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
         ];
     }
 }

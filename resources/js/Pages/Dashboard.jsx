@@ -11,7 +11,7 @@ export default function Dashboard() {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     Üdvözöllek,{" "}
                     <span className="font-bold">
-                        {user.last_name} {user.first_name}
+                        {user.name}
                     </span>
                     ! Kérlek válassz a menüpontok közül.
                 </div>

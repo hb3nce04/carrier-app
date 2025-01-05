@@ -10,9 +10,10 @@ class Consignee extends Model
     use HasFactory;
 
     protected $fillable = [
-        "first_name",
-        "last_name",
-        "phone_number"
+        'first_name',
+        'last_name',
+        'address_id',
+        'phone_number'
     ];
 
     /**
@@ -22,6 +23,11 @@ class Consignee extends Model
     public function shipment()
     {
         return $this->hasMany(Shipment::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 
     public function getFullName(): string {

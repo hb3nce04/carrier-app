@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\StreetSuffix;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,10 +17,12 @@ class ConsigneeFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            "first_name" => fake()->firstName(),
-            "last_name" => fake()->lastName(),
-            "phone_number" => fake()->phoneNumber(),
+            'address_id' => AddressFactory::new()->create()->id,
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'phone_number' => fake()->phoneNumber(),
         ];
     }
 }

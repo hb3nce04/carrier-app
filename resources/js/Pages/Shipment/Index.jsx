@@ -1,7 +1,7 @@
 import Pagination from "@/Components/custom/Pagination";
-import SelectInput from "@/Components/custom/SelectInput";
+import SelectInput from "@/Components/form/SelectInput.jsx";
 import { Table } from "@/Components/custom/Table";
-import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts";
+import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -11,10 +11,13 @@ export default function Index({
     queryParams = { status: "" },
 }) {
     queryParams = queryParams || {};
+    console.log(shipments)
     const rows = shipments.data.map((shipment) => {
         return {
             ...shipment,
+            departure_address: `${shipment.departure_address.full_address}`,
             consignee: `${shipment.consignee.full_name} (${shipment.consignee.phone_number})`,
+            consignee_address: `${shipment.consignee.address.full_address}`,
             carrier: `${shipment.carrier.full_name}`,
             status: SHIPMENT_STATUS[shipment.status],
         };

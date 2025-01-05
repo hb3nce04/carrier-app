@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\ShipmentStatus;
-use Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ShipmentUpdateStatusRequest extends FormRequest
@@ -25,7 +25,7 @@ class ShipmentUpdateStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "status" => Rule::in(ShipmentStatus::cases()),
+            'status' => Rule::in(ShipmentStatus::cases()),
         ];
     }
 }

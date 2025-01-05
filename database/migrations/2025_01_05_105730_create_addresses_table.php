@@ -1,23 +1,24 @@
 <?php
 
-use App\Models\Address;
 use App\Models\StreetSuffix;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('consignees', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Address::class, 'address_id')->constrained();
-            $table->string("first_name", 50);
-            $table->string("last_name", 50);
-            $table->string("phone_number", 15);
+            $table->integer('postal');
+            $table->string('city', 50);
+            $table->string('street_name', 20);
+            $table->foreignIdFor(StreetSuffix::class)->constrained();
+            $table->string('number', 20);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('consignees');
+        Schema::dropIfExists('addresses');
     }
 };

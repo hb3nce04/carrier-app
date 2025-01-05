@@ -98,7 +98,7 @@ return [
     'submit'          => 'Submit',
     'subscribe'       => 'Subscribe',
     'switch'          => 'Switch',
-    'switch_to_role'  => 'Switch To Role',
+    'switch_to_role'  => 'Switch To UserRole',
     'tag'             => 'Tag',
     'tags'            => 'Tags',
     'target_link'     => [

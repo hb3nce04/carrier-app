@@ -5,6 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// TODO séma összhangba hozása a migrationnel
 return new class extends Migration {
     /**
      * Run the migrations.
@@ -16,7 +17,7 @@ return new class extends Migration {
             $table->string("brand", 50);
             $table->string("model", 50)->nullable();
             $table->string("plate_number", 10)->unique();
-            $table->foreignIdFor(Carrier::class)->unique()->constrained();
+            $table->foreignIdFor(Carrier::class)->unique()->nullable()->constrained();
             $table->timestamps();
         });
     }

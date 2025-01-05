@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
-use App\Models\Carrier;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredCarrierController extends Controller
+class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
@@ -31,18 +32,17 @@ class RegisteredCarrierController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'email' => 'required|string|lowercase|email|max:50|unique:' . Carrier::class,
+            'name' => 'required|string|max:50',
+            'email' => 'required|string|lowercase|email|max:50|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $carrier = Carrier::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+        $carrier = User::create([
+            'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            "email_verified_at" => now(),
+            'role' => UserRole::CARRIER,
+            'email_verified_at' => now(),
         ]);
 
         event(new Registered($carrier));

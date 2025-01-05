@@ -1,8 +1,8 @@
-import Checkbox from "@/Components/Checkbox";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import Checkbox from "@/Components/form/Checkbox.jsx";
+import InputError from "@/Components/form/InputError.jsx";
+import InputLabel from "@/Components/form/InputLabel.jsx";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
+import TextInput from "@/Components/form/TextInput.jsx";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
@@ -50,7 +50,7 @@ export default function Login({ status, canResetPassword }) {
                         name="email"
                         value={data.email}
                         className="mt-1 block w-full"
-                        autoComplete="username"
+                        autoComplete="email"
                         isFocused={true}
                         onChange={(e) => setData("email", e.target.value)}
                     />
@@ -67,7 +67,7 @@ export default function Login({ status, canResetPassword }) {
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
-                        autoComplete="current-password"
+                        autoComplete="password"
                         onChange={(e) => setData("password", e.target.value)}
                     />
 

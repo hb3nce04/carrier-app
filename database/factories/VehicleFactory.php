@@ -18,14 +18,14 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            "brand" => fake()->randomElement(["Toyota", "Honda", "Ford", "Chevrolet", "Nissan"]),
-            "model" => fake()->randomElement(["Corolla", "Civic", "F-150", "Silverado", "Sentra"]),
-            "plate_number" => fake()->regexify("[A-Z]{3}-[0-9]{3}"),
+            'brand' => fake()->randomElement(['Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan']),
+            'model' => fake()->randomElement(['Corolla', 'Civic', 'F-150', 'Silverado', 'Sentra']),
+            'plate_number' => fake()->regexify('[A-Z]{3}-[0-9]{3}'),
         ];
     }
 
     public function withCarrier(Carrier $carrier)
     {
-        return $this->state(["carrier_id" => $carrier->id]);
+        return $this->state(['carrier_id' => $carrier->id]);
     }
 }

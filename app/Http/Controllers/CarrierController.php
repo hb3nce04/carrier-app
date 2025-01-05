@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VehicleCreateRequest;
 use App\Http\Resources\CarrierResource;
-use App\Http\Resources\VehicleResource;
 use App\Models\Carrier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +16,7 @@ class CarrierController extends Controller
 
         $carriers = Carrier::all();
         return Inertia::render('Carrier/Index', [
-            "carriers" => CarrierResource::collection($carriers)
+            'carriers' => CarrierResource::collection($carriers)
         ]);
     }
 
@@ -32,17 +30,22 @@ class CarrierController extends Controller
 
     }
 
-    public function show(Request $request, Carrier $vehicle)
+    public function show(Request $request, Carrier $carrier)
     {
 
     }
 
-    public function edit(Request $request, Carrier $vehicle)
+    public function edit(Request $request, Carrier $carrier)
     {
 
     }
 
-    public function destroy(Request $request, Carrier $vehicle)
+    public function update(Request $request, Carrier $carrier)
+    {
+
+    }
+
+    public function destroy(Request $request, Carrier $carrier)
     {
 
     }

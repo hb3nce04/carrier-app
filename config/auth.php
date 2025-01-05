@@ -62,7 +62,7 @@ return [
     'providers' => [
         'carriers' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Carrier::class),
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
         // 'users' => [

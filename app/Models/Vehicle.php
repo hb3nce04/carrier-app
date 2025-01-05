@@ -10,11 +10,13 @@ class Vehicle extends Model
     use HasFactory;
 
     protected $fillable = [
-        "brand",
-        "model",
-        "plate_number",
-        "carrier_id"
+        'brand',
+        'model',
+        'plate_number',
+        'carrier_id'
     ];
+
+    protected $with = ['carrier'];
 
     public function carrier()
     {

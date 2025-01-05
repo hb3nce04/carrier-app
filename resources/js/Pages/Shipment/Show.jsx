@@ -1,10 +1,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { SHIPMENT_STATUS } from "@/consts";
-import SelectInput from "@/Components/custom/SelectInput";
+import { SHIPMENT_STATUS } from "@/consts.js";
+import SelectInput from "@/Components/form/SelectInput.jsx";
 import toast from "react-hot-toast";
 import DangerButton from "@/Components/DangerButton";
 import PrimaryButton from "@/Components/PrimaryButton";
+import {renderLabels} from "@/utils.jsx";
+
+const shipmentLabels = [
+    {name: "Indulási cím", value: "departure_address.full_address"},
+    {name: "Érkezési cím", value: "consignee.address.full_address"},
+    {name: "Címzett neve", value: "consignee.full_name"},
+    {name: "Címzett telefonszáma", value: "consignee.phone_number"},
+    {name: "Fuvarozó", value: "carrier.full_name"},
+    {name: "Rögzítés dátuma", value: "created_at"},
+    {name: "Utolsó módosítás dátuma", value: "updated_at"},
+]
 
 export default function Edit({
     shipment,
@@ -47,36 +58,7 @@ export default function Edit({
                     Munka: #{shipment.id}
                 </h1>
                 <div className="mt-4">
-                    <div>
-                        Indulási cím:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.departure_address}
-                        </span>
-                    </div>
-                    <div>
-                        Érkezési cím:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.arrival_address}
-                        </span>
-                    </div>
-                    <div>
-                        Címzett neve:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.consignee.full_name}
-                        </span>
-                    </div>
-                    <div>
-                        Címzett telefonszáma:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.consignee.phone_number}
-                        </span>
-                    </div>
-                    <div>
-                        Fuvarozó:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.carrier.full_name}
-                        </span>
-                    </div>
+                    {renderLabels(shipmentLabels, shipment).slice(0,5)}
                     <div>
                         {can.changeStatus ? (
                             <form
@@ -110,18 +92,7 @@ export default function Edit({
                             </>
                         )}
                     </div>
-                    <div>
-                        Rögzítés dátuma:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.created_at}
-                        </span>
-                    </div>
-                    <div>
-                        Utolsó módosítás dátuma:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {shipment.updated_at}
-                        </span>
-                    </div>
+                    {renderLabels(shipmentLabels, shipment).slice(5)}
                 </div>
                 <div className="mt-6 flex gap-2 justify-end">
                     <Link

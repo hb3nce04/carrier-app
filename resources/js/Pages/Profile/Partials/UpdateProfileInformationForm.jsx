@@ -1,8 +1,7 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/form/InputError.jsx";
+import InputLabel from "@/Components/form/InputLabel.jsx";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import { getRoleName } from "@/consts";
+import TextInput from "@/Components/form/TextInput.jsx";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
@@ -14,9 +13,7 @@ export default function UpdateProfileInformation({
     const { user } = usePage().props.auth;
 
     const { data, setData, patch, errors, processing } = useForm({
-        nickname: user.nickname,
-        first_name: user.first_name,
-        last_name: user.last_name,
+        name: user.name,
         email: user.email,
     });
 
@@ -44,75 +41,30 @@ export default function UpdateProfileInformation({
                 <span className="text-gray-700 dark:text-gray-400">
                     Szerepkör:{" "}
                     <span className="font-bold">
-                        {getRoleName(user.is_admin)}
+                        {user.role}
                     </span>
                 </span>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                {user.is_admin && (
-                    <div>
-                        <InputLabel htmlFor="nickname" value="Becenév" />
+                <div>
+                    <InputLabel htmlFor="name" value="Felhasználónév" />
 
-                        <TextInput
-                            id="nickname"
-                            type="text"
-                            className="mt-1 block w-full"
-                            value={data.nickname}
-                            onChange={(e) =>
-                                setData("nickname", e.target.value)
-                            }
-                            required
-                        />
+                    <TextInput
+                        id="name"
+                        type="text"
+                        className="mt-1 block w-full"
+                        value={data.name}
+                        onChange={(e) =>
+                            setData("name", e.target.value)
+                        }
+                        required
+                    />
 
-                        <InputError
-                            className="mt-2"
-                            message={errors.nickname}
-                        />
-                    </div>
-                )}
-
-                <div className="flex gap-2">
-                    <div className="w-full">
-                        <InputLabel htmlFor="last_name" value="Vezetéknév" />
-
-                        <TextInput
-                            id="last_name"
-                            className="mt-1 block w-full"
-                            value={data.last_name}
-                            onChange={(e) =>
-                                setData("last_name", e.target.value)
-                            }
-                            required
-                            isFocused
-                            autoComplete="last_name"
-                        />
-
-                        <InputError
-                            className="mt-2"
-                            message={errors.last_name}
-                        />
-                    </div>
-                    <div className="w-full">
-                        <InputLabel htmlFor="first_name" value="Keresztnév" />
-
-                        <TextInput
-                            id="first_name"
-                            className="mt-1 block w-full"
-                            value={data.first_name}
-                            onChange={(e) =>
-                                setData("first_name", e.target.value)
-                            }
-                            required
-                            isFocused
-                            autoComplete="first_name"
-                        />
-
-                        <InputError
-                            className="mt-2"
-                            message={errors.first_name}
-                        />
-                    </div>
+                    <InputError
+                        className="mt-2"
+                        message={errors.name}
+                    />
                 </div>
 
                 <div>

@@ -2,6 +2,16 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import DangerButton from "@/Components/DangerButton";
+import {renderLabels} from "@/utils.jsx";
+
+const vehicleLabels = [
+    {name: "Márka", value: "brand"},
+    {name: "Model", value: "model"},
+    {name: "Rendszám", value: "plate_number"},
+    {name: "Tulajdonos", value: "carrier.full_name"},
+    {name: "Rögzítés dátuma", value: "created_at"},
+    {name: "Utolsó módosítás dátuma", value: "updated_at"},
+]
 
 export default function Edit({
                                  vehicle,
@@ -30,42 +40,7 @@ export default function Edit({
                     Jármű: #{vehicle.id}
                 </h1>
                 <div className="mt-4">
-                    <div>
-                        Márka:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.brand}
-                        </span>
-                    </div>
-                    <div>
-                        Model:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.model}
-                        </span>
-                    </div>
-                    <div>
-                        Rendszám:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.plate_number}
-                        </span>
-                    </div>
-                    <div>
-                        Tulajdonos:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.carrier.full_name}
-                        </span>
-                    </div>
-                    <div>
-                        Rögzítés dátuma:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.created_at}
-                        </span>
-                    </div>
-                    <div>
-                        Utolsó módosítás dátuma:{" "}
-                        <span className="text-indigo-400 font-bold">
-                            {vehicle.updated_at}
-                        </span>
-                    </div>
+                    {renderLabels(vehicleLabels, vehicle)}
                 </div>
                 <div className="mt-6 flex gap-2 justify-end">
                     <Link
@@ -74,7 +49,6 @@ export default function Edit({
                     >
                         Vissza
                     </Link>
-
                     {can.update && (
                         <Link
                             href={route("vehicles.edit", vehicle)}
@@ -83,7 +57,6 @@ export default function Edit({
                             Szerkesztés
                         </Link>
                     )}
-
                     {can.delete && (
                         <form onSubmit={onSubmitDelete}>
                             <DangerButton>Törlés</DangerButton>

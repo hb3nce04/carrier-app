@@ -1,6 +1,6 @@
 import { Table } from "@/Components/custom/Table";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { VEHICLE_TABLE_COLUMNS } from "@/consts";
+import { VEHICLE_TABLE_COLUMNS } from "@/consts.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 

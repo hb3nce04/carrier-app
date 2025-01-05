@@ -19,16 +19,16 @@ export const LINKS = [
         text: "Fuvarozók",
         protected: true,
     },
-    // {
-    //     name: "carriers.index",
-    //     text: "Címzettek",
-    //     protected: true,
-    // },
-    // {
-    //     name: "admins.index",
-    //     text: "Adminisztrátorok",
-    //     protected: true,
-    // },
+    {
+        name: "vehicles.index",
+        text: "Címzettek",
+        protected: true,
+    },
+    {
+        name: "vehicles.index",
+        text: "Adminisztrátorok",
+        protected: true,
+    },
 ];
 
 export const SHIPMENT_TABLE_COLUMNS = [
@@ -41,16 +41,16 @@ export const SHIPMENT_TABLE_COLUMNS = [
         text: "Indulási cím",
     },
     {
-        name: "arrival_address",
-        text: "Érkezési cím",
-    },
-    {
         name: "status",
         text: "Státusz",
     },
     {
         name: "consignee",
         text: "Címzett",
+    },
+    {
+        name: "consignee_address",
+        text: "Érkezési cím",
     },
     {
         name: "carrier",
@@ -115,6 +115,7 @@ export const SHIPMENT_STATUS = {
     failed: "Sikertelen",
 };
 
-export const getRoleName = (admin) => {
-    return admin == 1 ? "Adminisztrátor" : "Fuvarozó";
-};
+export const Role = {
+    ADMIN: 'admin',
+    CARRIER: 'carrier'
+}
