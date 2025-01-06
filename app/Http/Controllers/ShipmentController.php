@@ -56,7 +56,7 @@ class ShipmentController extends Controller
         return Inertia::render('Shipment/Create', [
             'carriers' => CarrierResource::collection($carriers),
             'streetSuffixes' => $streetSuffixes,
-            'consignees' => $consignees
+            'consignees' => ConsigneeResource::collection($consignees)
         ]);
 
     }

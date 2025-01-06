@@ -2,10 +2,10 @@ import { Link, useForm } from "@inertiajs/react";
 
 import { MdEdit, MdDelete } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-import DangerButton from "../DangerButton";
+import DangerButton from "../form/button/DangerButton.jsx";
 
-import Modal from "../Modal";
-import SecondaryButton from "../SecondaryButton";
+import Modal from "./Modal.jsx";
+import SecondaryButton from "../form/button/SecondaryButton.jsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -13,8 +13,7 @@ export function Table({
     rows,
     columns,
     routeName,
-    canUpdate = false,
-    canDelete = false,
+    can = {update: false, delete: false}
 }) {
     const [confirmingDeleteRow, setConfirmingDeleteRow] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -33,10 +32,10 @@ export function Table({
             preserveScroll: true,
             onSuccess: () => {
                 closeModal();
-                toast.success("Sor sikeresen törölve!");
+                toast.success("Sikeres törlés!");
             },
             onError: () => {
-                toast.error("Hiba történt a sor törlése során!");
+                toast.error("Hiba történt a törlés során!");
             },
         });
     };
@@ -51,7 +50,7 @@ export function Table({
             <Modal show={confirmingDeleteRow} onClose={closeModal}>
                 <form onSubmit={deleteRow} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Biztosan törölni szeretnéd ezt a sort?
+                        Biztosan törölni szeretnéd?
                     </h2>
 
                     <div className="mt-6 flex justify-end">
@@ -105,7 +104,7 @@ export function Table({
                                                 title="Megtekintés"
                                             />
                                         </Link>
-                                        {canUpdate && (
+                                        {can.update && (
                                             <Link
                                                 href={route(
                                                     `${routeName}.edit`,
@@ -119,7 +118,7 @@ export function Table({
                                             </Link>
                                         )}
 
-                                        {canDelete && (
+                                        {can.delete && (
                                             <MdDelete
                                                 onClick={() =>
                                                     confirmDelete(row)
@@ -134,11 +133,11 @@ export function Table({
                         ))}
                 </tbody>
             </table>
-            {rows.length === 0 ? (
+            {rows.length === 0 && (
                 <div className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 w-full text-center p-2">
                     Nincs megjeleníthető adat.
                 </div>
-            ) : null}
+            )}
         </>
     );
 }

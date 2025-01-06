@@ -22,7 +22,7 @@ class AddressFactory extends Factory
             'city' => fake()->city(),
             'street_name' =>explode(' ', $this->faker->streetName())[0],
             'street_suffix_id' => StreetSuffix::pluck('id')->random() ?? 1,
-            'number' => fake()->buildingNumber(),
+            'number' => fake()->buildingNumber().fake()->randomElement(['', '/A', '/B', '/C', '/D', 'A/2', 'B/2', 'C/2', 'D/2', 'e']),
         ];
     }
 }

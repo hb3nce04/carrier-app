@@ -1,8 +1,8 @@
 import InputError from "@/Components/form/InputError.jsx";
-import PrimaryButton from "@/Components/PrimaryButton";
+import PrimaryButton from "@/Components/form/button/PrimaryButton.jsx";
 import TextInput from "@/Components/form/TextInput.jsx";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -16,9 +16,7 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Elfelejtett jelszó" />
-
+        <GuestLayout title="Elfelejtett jelszó">
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 Elfelejtetted a jelszavadat? Semmi probléma. Ha megadod az
                 e-mail címed akkor küldünk neked egy linket amivel megadhatsz

@@ -1,4 +1,4 @@
-import TextInputGroup from "@/Components/form/TextInputGroup.jsx";
+import TextInputGroup from "@/Components/form/group/TextInputGroup.jsx";
 
 export const renderInputFields = (fields, data, errors, setData) =>
     fields.map((field) => (
@@ -14,27 +14,31 @@ export const renderInputFields = (fields, data, errors, setData) =>
         />
     ));
 
-export const renderLabels = (labels, data) => labels.map((label) => (
-    <div>
+export const renderLabels = (labels, data) => labels.map((label, id) => (
+    <div key={id}>
         {label.name}:{" "}
-        <span className="text-indigo-400 font-bold">{label.value.split('.').reduce((obj, key) => obj && obj[key], data)}</span>
+        <span
+            className="text-indigo-400 font-bold">{label.value.split('.').reduce((obj, key) => obj && obj[key], data)}</span>
     </div>
 ))
 
-export const handleSelectChange = (e, setData) => {
+/**
+ * for onChange props, automatically guesses the singular id and set the value for the element
+ * @param e
+ * @param setData
+ */
+export const handleSingleSelect = (e, setData) => {
     setData(e.target.id.split('s')[0] + "_id", e.target.value)
 }
 
-export const extractFieldIds = (fields) => {
+/**
+ * for useForm hook, returns back with field list
+ * @param fields
+ * @param values
+ */
+export const extractFields = (fields, values) => {
     return fields.reduce((acc, field) => {
-        acc[field.id] = "";
-        return acc;
-    }, {});
-}
-
-export const extractFieldIdsWithValue = (fields, values) => {
-    return fields.reduce((acc, field) => {
-        acc[field.id] = values[field.id];
+        acc[field.id] = values ? values[field.id] : "";
         return acc;
     }, {});
 }

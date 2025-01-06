@@ -14,7 +14,40 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $suffixes = ['utca', 'tér', 'körút', 'sétány', 'út', 'sor', 'köz', 'park', 'lépcső', 'dűlő', 'liget'];
+        $suffixes = [
+            'utca',
+            'tér',
+            'körút',
+            'sétány',
+            'út',
+            'sor',
+            'köz',
+            'park',
+            'lépcső',
+            'dűlő',
+            'liget',
+            'fasor',
+            'közter',
+            'telep',
+            'kert',
+            'híd',
+            'rév',
+            'ösvény',
+            'csárda',
+            'domb',
+            'halom',
+            'zug',
+            'lejtő',
+            'rakpart',
+            'sáv',
+            'zugoly',
+            'mező',
+            'part',
+            'hegy',
+            'völgy',
+            'sziget',
+            'erdő'
+        ];
         foreach ($suffixes as $suffix) {
             StreetSuffix::create(['name' => $suffix]);
         }

@@ -22,7 +22,7 @@ class ConsigneeFactory extends Factory
             'address_id' => AddressFactory::new()->create()->id,
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'phone_number' => fake()->phoneNumber(),
+            'phone_number' => '+36'.fake()->randomElement(['20', '30', '70']).fake()->numerify('#######'),
         ];
     }
 }

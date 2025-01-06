@@ -1,13 +1,13 @@
 import InputError from "@/Components/form/InputError.jsx";
 import InputLabel from "@/Components/form/InputLabel.jsx";
-import PrimaryButton from "@/Components/PrimaryButton";
+import PrimaryButton from "@/Components/form/button/PrimaryButton.jsx";
 import TextInput from "@/Components/form/TextInput.jsx";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {data, setData, post, processing, errors, reset} = useForm({
         name: "",
         email: "",
         password: "",
@@ -31,13 +31,11 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Regisztráció" />
-
+        <GuestLayout title="Regisztráció">
             <form onSubmit={submit}>
                 <div>
                     <div>
-                        <InputLabel htmlFor="name" value="Felhasználónév" />
+                        <InputLabel htmlFor="name" value="Felhasználónév"/>
 
                         <TextInput
                             id="name"
@@ -59,7 +57,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Email"/>
 
                     <TextInput
                         id="email"
@@ -72,11 +70,11 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Jelszó" />
+                    <InputLabel htmlFor="password" value="Jelszó"/>
 
                     <TextInput
                         id="password"
@@ -89,7 +87,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">

@@ -1,9 +1,9 @@
 import InputError from '@/Components/form/InputError.jsx';
 import InputLabel from '@/Components/form/InputLabel.jsx';
-import PrimaryButton from '@/Components/PrimaryButton';
+import PrimaryButton from '@/Components/form/button/PrimaryButton.jsx';
 import TextInput from '@/Components/form/TextInput.jsx';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,9 +22,7 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Reset Password" />
-
+        <GuestLayout title="Jelszóváltoztatás">
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />

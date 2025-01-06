@@ -1,6 +1,6 @@
 import InputError from "@/Components/form/InputError.jsx";
 import InputLabel from "@/Components/form/InputLabel.jsx";
-import PrimaryButton from "@/Components/PrimaryButton";
+import PrimaryButton from "@/Components/form/button/PrimaryButton.jsx";
 import TextInput from "@/Components/form/TextInput.jsx";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";

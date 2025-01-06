@@ -36,6 +36,6 @@ class Address extends Model
 
     public function getFullAddress(): string {
         $suffix = $this->streetSuffix->name;
-        return "$this->postal $this->city $this->street_name $suffix $this->number";
+        return "$this->postal $this->city, $this->street_name $suffix $this->number";
     }
 }

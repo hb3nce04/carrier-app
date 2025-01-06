@@ -1,11 +1,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import {Head, useForm} from "@inertiajs/react";
+import {useForm} from "@inertiajs/react";
 
-import PrimaryButton from "@/Components/PrimaryButton";
 import toast from "react-hot-toast";
-import {extractFieldIds, handleSelectChange, renderInputFields} from "@/utils.jsx";
-import SecondaryLink from "@/Components/SecondaryLink.jsx";
-import SelectInputGroup from "@/Components/form/SelectInputGroup.jsx";
+import {extractFields, handleSingleSelect, renderInputFields} from "@/utils.jsx";
+import SelectInputGroup from "@/Components/form/group/SelectInputGroup.jsx";
+import Form from "@/Components/custom/Form.jsx";
 
 const vehicleFields = [
     {id: "brand", label: "Márka"},
@@ -13,8 +12,8 @@ const vehicleFields = [
     {id: "plate_number", label: "Rendszám"},
 ];
 export default function Create({carriers}) {
-    const {data, setData, post, errors, processing} = useForm({
-        ...extractFieldIds(vehicleFields),
+    const {data, setData, post, errors} = useForm({
+        ...extractFields(vehicleFields),
         carrier_id: 1,
     });
 
@@ -34,30 +33,23 @@ export default function Create({carriers}) {
     };
 
     return (
-        <AuthenticatedLayout>
-            <Head title={"Új jármű létrehozása"}/>
+        <AuthenticatedLayout title={"Új jármű létrehozása"}>
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 text-white">
                 <h1 className="text-4xl font-light">Új jármű létrehozása</h1>
-                <form onSubmit={onSubmit} className="mt-5">
-                    <div
-                        className="flex flex-col gap-2">
-                        {renderInputFields(vehicleFields, data, errors, setData)}
-                        <SelectInputGroup
-                            id="carriers" label="Fuvarozók" value={data.carrier_id}
-                            error={errors.carriers}
-                            onChange={(e) => handleSelectChange(e, setData)}>
-                            {carriers.data.length === 0 &&
-                                <option>Jelenleg nincs jármű nélküli fuvarozó!</option>}
-                            {carriers.data.map((carrier, i) => (<option key={i} value={carrier.id}>
-                                {carrier.full_name}
-                            </option>))}
-                        </SelectInputGroup>
-                    </div>
-                    <div className="mt-6 flex gap-2 justify-end">
-                        <SecondaryLink href={route("vehicles.index")}>Vissza</SecondaryLink>
-                        <PrimaryButton disabled={processing}>Létrehozás</PrimaryButton>
-                    </div>
-                </form>
+                <Form className="flex flex-col gap-2" onSubmit={onSubmit} submitText={"Létrehozás"}
+                      backLink={"vehicles.index"}>
+                    {renderInputFields(vehicleFields, data, errors, setData)}
+                    <SelectInputGroup
+                        id="carriers" label="Fuvarozók" value={data.carrier_id}
+                        error={errors.carriers}
+                        onChange={(e) => handleSingleSelect(e, setData)}>
+                        {carriers.data.length === 0 &&
+                            <option>Jelenleg nincs jármű nélküli fuvarozó!</option>}
+                        {carriers.data.map((carrier, i) => (<option key={i} value={carrier.id}>
+                            {carrier.full_name}
+                        </option>))}
+                    </SelectInputGroup>
+                </Form>
             </div>
         </AuthenticatedLayout>
     );

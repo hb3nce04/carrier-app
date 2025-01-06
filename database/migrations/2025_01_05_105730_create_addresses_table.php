@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->integer('postal');
+            $table->string('postal');
             $table->string('city', 50);
             $table->string('street_name', 20);
             $table->foreignIdFor(StreetSuffix::class)->constrained();

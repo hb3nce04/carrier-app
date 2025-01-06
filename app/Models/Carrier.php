@@ -35,6 +35,6 @@ class Carrier extends Model
     }
 
     public function getFullName(): string {
-        return "$this->first_name $this->last_name";
+        return "$this->last_name $this->first_name";
     }
 }

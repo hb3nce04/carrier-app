@@ -3,7 +3,8 @@ import SelectInput from "@/Components/form/SelectInput.jsx";
 import { Table } from "@/Components/custom/Table";
 import { SHIPMENT_STATUS, SHIPMENT_TABLE_COLUMNS } from "@/consts.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+import PrimaryLink from "@/Components/form/button/PrimaryLink.jsx";
 
 export default function Index({
     shipments,
@@ -11,7 +12,6 @@ export default function Index({
     queryParams = { status: "" },
 }) {
     queryParams = queryParams || {};
-    console.log(shipments)
     const rows = shipments.data.map((shipment) => {
         return {
             ...shipment,
@@ -38,9 +38,7 @@ export default function Index({
     };
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Munkák" />
-
+        <AuthenticatedLayout title="Munkák">
             <div className="relative overflow-x-auto text-gray-500 dark:text-gray-400">
                 <div className="flex justify-end my-4 gap-4 items-center">
                     {can.filter && (
@@ -49,11 +47,11 @@ export default function Index({
                             onChange={(e) => changeStatus(e.target.value)}
                             className="align-self-start"
                         >
-                            <option key={1} value={""}>
+                            <option key={0} value={""}>
                                 Válassz státuszt!
                             </option>
                             {Object.keys(SHIPMENT_STATUS).map((status, i) => (
-                                <option key={i + 1} value={status}>
+                                <option key={i} value={status || ""}>
                                     {SHIPMENT_STATUS[status]}
                                 </option>
                             ))}
@@ -61,12 +59,11 @@ export default function Index({
                     )}
                     {can.create && (
                         <>
-                            <Link
+                            <PrimaryLink
                                 href={route("shipments.create")}
-                                className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                             >
                                 Új munka létrehozása
-                            </Link>
+                            </PrimaryLink>
                         </>
                     )}
                 </div>
@@ -74,8 +71,7 @@ export default function Index({
                     rows={rows}
                     columns={SHIPMENT_TABLE_COLUMNS}
                     routeName={"shipments"}
-                    canUpdate={can.update}
-                    canDelete={can.delete}
+                    can={can}
                 />
             </div>
             <Pagination links={shipments.meta.links} />

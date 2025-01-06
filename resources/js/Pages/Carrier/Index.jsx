@@ -1,10 +1,9 @@
-import { Table } from "@/Components/custom/Table";
-import PrimaryButton from "@/Components/PrimaryButton";
-import { CARRIER_TABLE_COLUMNS } from "@/consts.js";
+import {Table} from "@/Components/custom/Table";
+import {CARRIER_TABLE_COLUMNS} from "@/consts.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import PrimaryLink from "@/Components/form/button/PrimaryLink.jsx";
 
-export default function Index({ carriers, can = {delete: false, update: false} }) {
+export default function Index({carriers, can = {delete: false, update: false}}) {
     const rows = carriers.data.map((carrier) => {
         return {
             ...carrier
@@ -12,23 +11,18 @@ export default function Index({ carriers, can = {delete: false, update: false} }
     });
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Fuvarozók" />
-
+        <AuthenticatedLayout title="Fuvarozók">
             <div className="relative overflow-x-auto text-gray-500 dark:text-gray-400">
-                <div className="flex justify-end m-2">
-                    <PrimaryButton>
-                        <Link href={route("carriers.create")}>
-                            Új fuvarozó létrehozása
-                        </Link>
-                    </PrimaryButton>
+                <div className="flex justify-end my-4 gap-4 items-center">
+                    <PrimaryLink>
+                        Új fuvarozó létrehozása
+                    </PrimaryLink>
                 </div>
                 <Table
                     rows={rows}
                     columns={CARRIER_TABLE_COLUMNS}
                     routeName={"carriers"}
-                    canDelete={can.delete}
-                    canUpdate={can.update}
+                    can={can}
                 />
             </div>
         </AuthenticatedLayout>

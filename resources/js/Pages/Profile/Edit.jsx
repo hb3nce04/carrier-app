@@ -1,13 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 
 export default function Edit({ mustVerifyEmail, status }) {
     return (
-        <AuthenticatedLayout>
-            <Head title="Profile" />
+        <AuthenticatedLayout title="Profil">
             <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                 <UpdateProfileInformationForm
                     mustVerifyEmail={mustVerifyEmail}

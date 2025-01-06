@@ -29,6 +29,11 @@ export const LINKS = [
         text: "Adminisztrátorok",
         protected: true,
     },
+    {
+        name: "vehicles.index",
+        text: "Felhasználók",
+        protected: true,
+    },
 ];
 
 export const SHIPMENT_TABLE_COLUMNS = [

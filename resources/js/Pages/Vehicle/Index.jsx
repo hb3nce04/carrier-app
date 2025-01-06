@@ -1,8 +1,7 @@
 import { Table } from "@/Components/custom/Table";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { VEHICLE_TABLE_COLUMNS } from "@/consts.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import PrimaryLink from "@/Components/form/button/PrimaryLink.jsx";
 
 export default function Index({ vehicles, can = {delete: false, update: false} }) {
     const rows = vehicles.data.map((vehicle) => {
@@ -13,23 +12,18 @@ export default function Index({ vehicles, can = {delete: false, update: false} }
     });
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Járművek" />
-
+        <AuthenticatedLayout title={"Járművek"}>
             <div className="relative overflow-x-auto text-gray-500 dark:text-gray-400">
-                <div className="flex justify-end m-2">
-                    <PrimaryButton>
-                        <Link href={route("vehicles.create")}>
-                            Új jármű létrehozása
-                        </Link>
-                    </PrimaryButton>
+                <div className="flex justify-end my-4 gap-4 items-center">
+                    <PrimaryLink href={route("vehicles.create")}>
+                        Új jármű létrehozása
+                    </PrimaryLink>
                 </div>
                 <Table
                     rows={rows}
                     columns={VEHICLE_TABLE_COLUMNS}
                     routeName={"vehicles"}
-                    canDelete={can.delete}
-                    canUpdate={can.update}
+                    can={can}
                 />
             </div>
         </AuthenticatedLayout>

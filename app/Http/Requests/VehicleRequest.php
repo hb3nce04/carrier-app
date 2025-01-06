@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Carrier;
 use App\Models\Vehicle;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class VehicleRequest extends FormRequest
 {
@@ -27,7 +29,7 @@ class VehicleRequest extends FormRequest
             'brand' => 'required|string|min:2|max:50',
             'model' => 'required|string|min:1|max:50',
             'plate_number' => 'required|string|min:10|max:10',
-            'carrier_id' => 'required|numeric|unique:vehicles',
+            'carrier_id' => 'required|numeric|exists:carriers,id',
         ];
     }
 }
