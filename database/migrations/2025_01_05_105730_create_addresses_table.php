@@ -14,11 +14,11 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('postal');
+            $table->string('postal_code');
             $table->string('city', 50);
             $table->string('street_name', 20);
             $table->foreignIdFor(StreetSuffix::class)->constrained();
-            $table->string('number', 20);
+            $table->string('street_number', 20);
             $table->timestamps();
         });
     }

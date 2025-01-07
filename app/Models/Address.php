@@ -10,11 +10,11 @@ class Address extends Model
     use HasFactory;
 
     protected $fillable = [
-        'postal',
+        'postal_code',
         'city',
         'street_name',
         'street_suffix_id',
-        'number'
+        'street_number'
     ];
 
     protected $with = ['streetSuffix'];
@@ -36,6 +36,6 @@ class Address extends Model
 
     public function getFullAddress(): string {
         $suffix = $this->streetSuffix->name;
-        return "$this->postal $this->city, $this->street_name $suffix $this->number";
+        return "$this->postal_code $this->city, $this->street_name $suffix $this->street_number";
     }
 }

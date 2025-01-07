@@ -8,7 +8,7 @@ import {renderInputFields, extractFields, handleSingleSelect} from "@/utils.jsx"
 import Form from "@/Components/custom/Form.jsx";
 
 const departureFields = [
-    {id: "departure_postal", label: "Irányítószám", type: "number"},
+    {id: "departure_postal_code", label: "Irányítószám", type: "number"},
     {id: "departure_city", label: "Város"},
     {id: "departure_street_name", label: "Utcanév"},
     {id: "departure_street_suffix", label: "Utca jelleg"},
@@ -19,7 +19,7 @@ const consigneeFields = [
     {id: "consignee_last_name", label: "Címzett vezetékneve"},
     {id: "consignee_first_name", label: "Címzett keresztneve"},
     {id: "consignee_phone_number", label: "Címzett telefonszáma"},
-    {id: "consignee_postal", label: "Irányítószám", type: "number"},
+    {id: "consignee_postal_code", label: "Irányítószám", type: "number"},
     {id: "consignee_city", label: "Város"},
     {id: "consignee_street_name", label: "Utcanév"},
     {id: "consignee_street_suffix", label: "Utca jelleg"},

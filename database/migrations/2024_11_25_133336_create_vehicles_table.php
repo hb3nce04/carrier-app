@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->string("brand", 50);
-            $table->string("model", 50)->nullable();
+            $table->string("model", 50);
             $table->string("plate_number", 10)->unique();
             $table->foreignIdFor(Carrier::class)->unique()->nullable()->constrained();
             $table->timestamps();

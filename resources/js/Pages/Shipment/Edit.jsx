@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 import Form from "@/Components/custom/Form.jsx";
 
 const departureFields = [
-    {id: "departure_postal", label: "Irányítószám", type: "number"},
+    {id: "departure_postal_code", label: "Irányítószám", type: "number"},
     {id: "departure_city", label: "Város"},
     {id: "departure_street_name", label: "Utcanév"},
     {id: "departure_street_number", label: "Házszám"},
@@ -25,7 +25,7 @@ const defConsigneeFields = [
     {id: "consignee_last_name", label: "Címzett vezetékneve"},
     {id: "consignee_first_name", label: "Címzett keresztneve"},
     {id: "consignee_phone_number", label: "Címzett telefonszáma", type: "tel"},
-    {id: "consignee_postal", label: "Irányítószám", type: "number"},
+    {id: "consignee_postal_code", label: "Irányítószám", type: "number"},
     {id: "consignee_city", label: "Város"},
     {id: "consignee_street_name", label: "Utcanév"},
     {id: "consignee_street_number", label: "Házszám"},
@@ -43,16 +43,16 @@ export default function Edit({shipment, carriers, streetSuffixes, consignees}) {
 
     const {data, setData, put, errors} = useForm({
         ...extractFields(departureFields, {
-            "departure_postal": shipment.departure_address.postal,
+            "departure_postal_code": shipment.departure_address.postal_code,
             "departure_city": shipment.departure_address.city,
             "departure_street_name": shipment.departure_address.street_name,
-            "departure_street_number": shipment.departure_address.number
+            "departure_street_number": shipment.departure_address.street_number
         }),
         ...extractFields(consigneeFields, {
-            "consignee_postal": shipment.consignee.address.postal,
+            "consignee_postal_code": shipment.consignee.address.postal_code,
             "consignee_city": shipment.consignee.address.city,
             "consignee_street_name": shipment.consignee.address.street_name,
-            "consignee_street_number": shipment.consignee.address.number,
+            "consignee_street_number": shipment.consignee.address.street_number,
             "consignee_last_name": shipment.consignee.last_name,
             "consignee_first_name": shipment.consignee.first_name,
             "consignee_phone_number": shipment.consignee.phone_number,
@@ -85,11 +85,11 @@ export default function Edit({shipment, carriers, streetSuffixes, consignees}) {
                     consignee_first_name: selected.first_name,
                     consignee_last_name: selected.last_name,
                     consignee_phone_number: selected.phone_number,
-                    consignee_postal: selected.address.postal,
+                    consignee_postal_code: selected.address.postal_code,
                     consignee_city: selected.address.city,
                     consignee_street_name: selected.address.street_name,
                     consignee_street_suffix_id: selected.address.street_suffix.id,
-                    consignee_street_number: selected.address.number,
+                    consignee_street_number: selected.address.street_number,
                 }));
         } else {
             setData(data => (
@@ -98,7 +98,7 @@ export default function Edit({shipment, carriers, streetSuffixes, consignees}) {
                     consignee_first_name: "",
                     consignee_last_name: "",
                     consignee_phone_number: "",
-                    consignee_postal: "",
+                    consignee_postal_code: "",
                     consignee_city: "",
                     consignee_street_name: "",
                     consignee_street_suffix_id: 0,

@@ -18,14 +18,14 @@ class AddressResource extends JsonResource
     {
         return [
             'full_address' => $this->getFullAddress(),
-            'postal' => $this->postal,
+            'postal_code' => $this->postal_code,
             'city' => $this->city,
             'street_name' => $this->street_name,
             'street_suffix' => [
                 'id' => $this->streetSuffix->id,
                 'name' => $this->streetSuffix->name
             ],
-            'number' => $this->number
+            'street_number' => $this->street_number
         ];
     }
 }
